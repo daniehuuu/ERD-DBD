@@ -4,9 +4,9 @@
   "settings": {
     "width": 4000,
     "height": 4000,
-    "scrollTop": -1519.3637,
-    "scrollLeft": -1538.7876,
-    "zoomLevel": 0.3,
+    "scrollTop": -1356.5801,
+    "scrollLeft": -1959.0053,
+    "zoomLevel": 0.8,
     "show": 431,
     "database": 2,
     "databaseName": "RRHH",
@@ -174,15 +174,15 @@
           "bWoyXmG_JyMmAzRfvq88p"
         ],
         "ui": {
-          "x": 2246.8372770233336,
-          "y": 1748.510803577331,
+          "x": 2204.8373,
+          "y": 1688.5108,
           "zIndex": 1075,
           "widthName": 60,
           "widthComment": 60,
           "color": ""
         },
         "meta": {
-          "updateAt": 1727240657407,
+          "updateAt": 1727293860259,
           "createAt": 1726929173739
         }
       },
@@ -2375,7 +2375,7 @@
         "comment": "",
         "dataType": "ntext",
         "default": "",
-        "options": 8,
+        "options": 0,
         "ui": {
           "keys": 0,
           "widthName": 69,
@@ -2384,7 +2384,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1726929733734,
+          "updateAt": 1727293979565,
           "createAt": 1726929578904
         }
       },
@@ -5197,8 +5197,8 @@
           "columnIds": [
             "aSZbeF5vfFVlsY0zGtvsf"
           ],
-          "x": 2654.8372770233336,
-          "y": 1872.510803577331,
+          "x": 2612.8373,
+          "y": 1812.5108,
           "direction": 2
         },
         "meta": {
@@ -6333,7 +6333,7 @@
       {
         "name": 1726929607304,
         "dataType": 1726929651668,
-        "options(notNull)": 1726929733733
+        "options(notNull)": 1727293979564
       }
     ],
     "mps2v2qwqjwph7D1HjCqh": [
