@@ -1,8 +1,4 @@
-SELECT 
-    País, 
-    ID, 
-    Total
-FROM (
+WITH Totales AS (
     SELECT 
         O.ShipCountry AS País,
         O.OrderID AS ID, 
@@ -14,23 +10,17 @@ FROM (
     WHERE 
         O.ShippedDate IS NOT NULL
     GROUP BY 
-        O.ShipCountry, O.OrderID 
-) AS Totales
-WHERE Total = (
-    SELECT MAX(Total)
-    FROM (
-        SELECT 
-            O.ShipCountry AS País,
-            SUM(OD.UnitPrice * OD.Quantity * (1 - OD.Discount)) AS Total
-        FROM 
-            Orders O
-        INNER JOIN  
-            [Order Details] OD ON O.OrderID = OD.OrderID
-        WHERE 
-            O.ShippedDate IS NOT NULL
-        GROUP BY 
-            O.ShipCountry, O.OrderID
-    ) AS TotalesSub
-    WHERE TotalesSub.País = Totales.País
+        O.ShipCountry, O.OrderID
 )
-ORDER BY 1;
+
+SELECT 
+    País, 
+    ID, 
+    Total
+FROM Totales T1
+WHERE Total = (
+    SELECT MAX(T2.Total)
+    FROM Totales T2
+    WHERE T1.País = T2.País
+)
+ORDER BY 1
