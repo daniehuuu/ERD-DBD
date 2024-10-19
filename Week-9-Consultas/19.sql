@@ -7,4 +7,5 @@ WHERE P.UnitPrice > (
     INNER JOIN Categories C ON P.CategoryID = C.CategoryID
     WHERE P.CategoryID = P2.CategoryID
 )
+AND P.Discontinued = 0
 ORDER BY 3, 4
