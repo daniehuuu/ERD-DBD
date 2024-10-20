@@ -4,9 +4,9 @@
   "settings": {
     "width": 4000,
     "height": 4000,
-    "scrollTop": -1356.5801,
-    "scrollLeft": -1959.0053,
-    "zoomLevel": 0.8,
+    "scrollTop": -1622.77,
+    "scrollLeft": -1391.175,
+    "zoomLevel": 0.74,
     "show": 431,
     "database": 2,
     "databaseName": "RRHH",
@@ -648,7 +648,7 @@
       },
       "gGjIUfMA8KryvmJYfJQbC": {
         "id": "gGjIUfMA8KryvmJYfJQbC",
-        "name": "Parentezco",
+        "name": "Parentesco",
         "comment": "",
         "columnIds": [
           "2ac72-EgRtrLloAxje7bQ",
@@ -667,7 +667,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1727240657407,
+          "updateAt": 1729463599152,
           "createAt": 1727234912069
         }
       },
@@ -5491,7 +5491,7 @@
       1727234912069,
       -1,
       {
-        "name": 1727235165020
+        "name": 1729463599146
       }
     ],
     "2ac72-EgRtrLloAxje7bQ": [
