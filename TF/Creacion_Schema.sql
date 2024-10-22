@@ -1,4 +1,8 @@
-
+/*
+CREATE DATABASE RRHH
+USE RRHH
+GO 
+*/
 CREATE TABLE AFP
 (
   AFP_cod      int          NOT NULL,
