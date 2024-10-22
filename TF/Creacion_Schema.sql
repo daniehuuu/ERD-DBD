@@ -1,13 +1,8 @@
-/*
-CREATE DATABASE RRHH
-USE RRHH
-GO
-*/
 
 CREATE TABLE AFP
 (
   AFP_cod      int          NOT NULL,
-  AFP_desc     varchar(15)  NOT NULL,
+  AFP_desc     nvarchar(15) NOT NULL,
   AFP_apor_obl decimal(4,2) NOT NULL,
   AFP_seg      decimal(4,2) NOT NULL,
   AFP_com      decimal(4,2) NOT NULL,
@@ -60,7 +55,7 @@ CREATE TABLE Calculo_Salario
   EMP_cod     int           NOT NULL,
   CSA_tipo    bit           NOT NULL,
   CSA_mon     decimal(10,2) NOT NULL,
-   CSA_desc   varchar(35)   NOT NULL,
+   CSA_desc   nvarchar(35)  NOT NULL,
   CSA_fec_ini date          NOT NULL,
   CSA_fec_fin date         ,
   CONSTRAINT PK_Calculo_Salario PRIMARY KEY (CSA_cod)
@@ -73,16 +68,16 @@ GO
 
 CREATE TABLE Cargo
 (
-  CAR_cod  int         NOT NULL,
-  CAR_desc varchar(25) NOT NULL,
+  CAR_cod  int          NOT NULL,
+  CAR_desc nvarchar(25) NOT NULL,
   CONSTRAINT PK_Cargo PRIMARY KEY (CAR_cod)
 )
 GO
 
 CREATE TABLE Condicion_Trabajo
 (
-  CTB_cod  int         NOT NULL,
-  CTB_desc varchar(15) NOT NULL,
+  CTB_cod  int          NOT NULL,
+  CTB_desc nvarchar(30) NOT NULL,
   CONSTRAINT PK_Condicion_Trabajo PRIMARY KEY (CTB_cod)
 )
 GO
@@ -114,9 +109,9 @@ GO
 
 CREATE TABLE Division
 (
-  DIV_cod     INT          NOT NULL,
-  DIV_nom     VARCHAR(100) NOT NULL,
-  DIV_ubi_fis ntext        NOT NULL,
+  DIV_cod     INT           NOT NULL,
+  DIV_nom     nvarchar(100) NOT NULL,
+  DIV_ubi_fis ntext         NOT NULL,
   CONSTRAINT PK_Division PRIMARY KEY (DIV_cod)
 )
 GO
@@ -126,9 +121,9 @@ CREATE TABLE Empleado
   EMP_cod      int           NOT NULL,
   CTB_cod      int           NOT NULL,
   SDV_cod      int           NOT NULL,
-  EMP_nom      VARCHAR(35)   NOT NULL,
-  EMP_ape_p    VARCHAR(15)   NOT NULL,
-  EMP_ape_m    varchar(15)   NOT NULL,
+  EMP_nom      nvarchar(35)  NOT NULL,
+  EMP_ape_p    nvarchar(15)  NOT NULL,
+  EMP_ape_m    nvarchar(15)  NOT NULL,
   TID_cod      int           NOT NULL,
   EMP_num_iden varchar(12)   NOT NULL,
   EMP_nac      varchar(25)   NOT NULL,
@@ -159,16 +154,16 @@ GO
 
 CREATE TABLE Familiar
 (
-  FAM_cod      int         NOT NULL,
-  PAR_cod      int         NOT NULL,
-  TID_cod      int         NOT NULL,
-  FAM_num_iden varchar(12) NOT NULL,
-  FAM_nom      varchar(35) NOT NULL,
-  FAM_ape_p    varchar(15) NOT NULL,
-  FAM_ape_m    varchar(15) NOT NULL,
-  FAM_fec_nac  date        NOT NULL,
-  FAM_fec_fall date       ,
-  FAM_sex      char(1)     NOT NULL,
+  FAM_cod      int          NOT NULL,
+  PAR_cod      int          NOT NULL,
+  TID_cod      int          NOT NULL,
+  FAM_num_iden varchar(12)  NOT NULL,
+  FAM_nom      nvarchar(35) NOT NULL,
+  FAM_ape_p    nvarchar(15) NOT NULL,
+  FAM_ape_m    nvarchar(15) NOT NULL,
+  FAM_fec_nac  date         NOT NULL,
+  FAM_fec_fall date        ,
+  FAM_sex      char(1)      NOT NULL,
   CONSTRAINT PK_Familiar PRIMARY KEY (FAM_cod)
 )
 GO
@@ -190,31 +185,31 @@ CREATE TABLE Licencia
   LIC_cod     int  NOT NULL,
   EMP_cod     int  NOT NULL,
   TLI_cod     int  NOT NULL,
-  LIC_fec_sol date,
+  LIC_fec_sol date NOT NULL,
   LIC_fec_ini date,
   LIC_fic_fin date,
-  VAC_est     bit ,
+  LIC_est     bit ,
   CONSTRAINT PK_Licencia PRIMARY KEY (LIC_cod)
 )
 GO
 
 EXECUTE sys.sp_addextendedproperty 'MS_Description',
-  'aprobado o no', 'user', dbo, 'table', 'Licencia', 'column', 'VAC_est'
+  'aprobado o no', 'user', dbo, 'table', 'Licencia', 'column', 'LIC_est'
 GO
 
 CREATE TABLE Parentesco
 (
-  PAR_cod  int        NOT NULL,
-  PAR_desc varchar(8) NOT NULL,
+  PAR_cod  int          NOT NULL,
+  PAR_desc nvarchar(12) NOT NULL,
   CONSTRAINT PK_Parentesco PRIMARY KEY (PAR_cod)
 )
 GO
 
 CREATE TABLE Sub_division
 (
-  SDV_cod int          NOT NULL,
-  SDV_nom varchar(100) NOT NULL,
-  DIV_cod INT          NOT NULL,
+  SDV_cod int           NOT NULL,
+  SDV_nom nvarchar(100) NOT NULL,
+  DIV_cod INT           NOT NULL,
   CONSTRAINT PK_Sub_division PRIMARY KEY (SDV_cod)
 )
 GO
@@ -229,18 +224,18 @@ GO
 
 CREATE TABLE Tipo_Identificacion
 (
-  TID_cod  int         NOT NULL,
-  TID_abr  varchar(5)  NOT NULL,
-  TID_desc varchar(32) NOT NULL,
+  TID_cod  int          NOT NULL,
+  TID_abr  nvarchar(5)  NOT NULL,
+  TID_desc nvarchar(32) NOT NULL,
   CONSTRAINT PK_Tipo_Identificacion PRIMARY KEY (TID_cod)
 )
 GO
 
 CREATE TABLE Tipo_Licencia
 (
-  TLI_cod  int         NOT NULL,
-  TLI_desc varchar(30) NOT NULL,
-  TLI_rem  bit         NOT NULL,
+  TLI_cod  int          NOT NULL,
+  TLI_desc nvarchar(30) NOT NULL,
+  TLI_rem  bit          NOT NULL,
   CONSTRAINT PK_Tipo_Licencia PRIMARY KEY (TLI_cod)
 )
 GO
