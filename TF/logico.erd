@@ -4,8 +4,8 @@
   "settings": {
     "width": 4000,
     "height": 4000,
-    "scrollTop": -1273.3012,
-    "scrollLeft": -2327.1392,
+    "scrollTop": -940.2328,
+    "scrollLeft": -1031.4491,
     "zoomLevel": 0.91,
     "show": 431,
     "database": 2,
@@ -256,7 +256,7 @@
           "color": "#E91E63"
         },
         "meta": {
-          "updateAt": 1729466564955,
+          "updateAt": 1729630035102,
           "createAt": 1726929173740
         }
       },
@@ -2623,7 +2623,7 @@
         "tableId": "mokIi8vsdQP0rJO1ON1yC",
         "name": "TLI_desc",
         "comment": "",
-        "dataType": "nvarchar(30)",
+        "dataType": "nvarchar(50)",
         "default": "",
         "options": 8,
         "ui": {
@@ -2634,7 +2634,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1729629287374,
+          "updateAt": 1729630070533,
           "createAt": 1727150563874
         }
       },
@@ -3403,7 +3403,7 @@
         "tableId": "rmYV_P7CD5YHt2Atfuqt0",
         "name": "TBE_desc",
         "comment": "",
-        "dataType": "varchar(30)",
+        "dataType": "varchar(50)",
         "default": "",
         "options": 8,
         "ui": {
@@ -3414,7 +3414,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1727237327002,
+          "updateAt": 1729630075710,
           "createAt": 1727237313457
         }
       },
@@ -5320,7 +5320,7 @@
       -1,
       {
         "name": 1727150571753,
-        "dataType": 1729629287373,
+        "dataType": 1729630070531,
         "options(notNull)": 1727150609783
       }
     ],
@@ -5865,7 +5865,7 @@
       -1,
       {
         "name": 1727237317050,
-        "dataType": 1727237324862,
+        "dataType": 1729630075709,
         "options(notNull)": 1727237327002
       }
     ],
