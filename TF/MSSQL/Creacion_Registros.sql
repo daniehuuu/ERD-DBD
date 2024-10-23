@@ -148,3 +148,27 @@ INSERT INTO Beneficios (BEN_cod, EMP_cod,TBE_cod, BEN_fec, BEN_mon) VALUES
 (8, 8, 008, '2023-08-14', 800.00),
 (9, 9, 009, '2023-09-23', 400.00),
 (10, 10, 010, '2023-10-30', 700.00)
+
+INSERT INTO Familiar (FAM_cod, PAR_cod, TID_cod, FAM_num_iden, FAM_nom, FAM_ape_p, FAM_ape_m, FAM_fec_nac, FAM_fec_fall, FAM_sex) VALUES
+(1, 1, 1, '81234567', 'Carlos', 'Perez', 'Ramirez', '1960-01-01', NULL, 'M'),
+(2, 2, 1, '98765432', 'Maria', 'Ramirez', 'Lopez', '1962-02-12', NULL, 'F'),
+(3, 3, 1, '11122233', 'Jorge', 'Perez', 'Ramirez', '1990-05-15', NULL, 'M'),
+(4, 4, 1, '44455566', 'Laura', 'Perez', 'Ramirez', '1992-08-30', NULL, 'F'),
+(5, 5, 1, '77788899', 'David', 'Perez', 'Ramirez', '2010-12-22', NULL, 'M'),
+(6, 6, 1, '11223344', 'Lucia', 'Perez', 'Ramirez', '2012-03-14', NULL, 'F'),
+(7, 7, 1, '22334455', 'Juan', 'Ramirez', 'Lopez', '1975-07-09', NULL, 'M'),
+(8, 8, 1, '33445566', 'Ana', 'Ramirez', 'Lopez', '1978-11-18', NULL, 'F'),
+(9, 9, 1, '44556677', 'Luis', 'Lopez', 'Ramirez', '1985-06-05', NULL, 'M'),
+(10, 10, 1, '55667788', 'Sofia', 'Lopez', 'Ramirez', '1987-09-25', NULL, 'F')
+
+INSERT INTO FAM_EMP (FAM_cod, EMP_cod) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10)
