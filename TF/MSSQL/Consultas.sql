@@ -4,18 +4,13 @@ FROM Empleado E
 JOIN Beneficios B ON E.EMP_cod = B.EMP_cod
 WHERE B.BEN_mon > (SELECT AVG(BEN_mon) FROM Beneficios)
 
-/* Faltan los registros de licencia
 --- 2.Muestre la cantidad de empleados que tengan una licencia remunerada aprobada 
-
 SELECT COUNT(DISTINCT L.EMP_cod) AS CantidadEmpleados
 FROM Licencia L
 JOIN Tipo_Licencia TL ON L.TLI_cod = TL.TLI_cod
 WHERE TL.TLI_rem = 1 AND L.LIC_est = 1
-*/
 
-/* Faltan los registros de licencia
 ---3.Muestre el año en el que se han solicitado más licencias las cuales fueron aprobadas
-
 SELECT Anio, CantidadLicencias
 FROM (
     SELECT 
@@ -36,7 +31,6 @@ WHERE CantidadLicencias = (
         GROUP BY YEAR(L.LIC_fec_sol)
     ) AS MaxLicencias
 )
-*/
 
 --4.Muestra todos los tipos de relacion de hermandad (hermano o hermana)
 SELECT P.PAR_cod AS 'Código de Parentesco', P.PAR_desc AS 'Descripción del Parentesco', COUNT(F.FAM_cod) AS 'Cantidad de Familiares'
