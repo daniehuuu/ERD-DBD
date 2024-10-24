@@ -55,7 +55,7 @@ GO
 
 CREATE TABLE Calculo_Salario
 (
-  CSA_cod     int           NOT NULL,
+  CSA_cod     int           IDENTITY(1,1) NOT NULL,
   EMP_cod     int           NOT NULL,
   CSA_tipo    bit           NOT NULL,
   CSA_mon     decimal(10,2) NOT NULL,

@@ -4,9 +4,9 @@
   "settings": {
     "width": 4000,
     "height": 4000,
-    "scrollTop": -1189.4104,
-    "scrollLeft": -2585.5493,
-    "zoomLevel": 0.73,
+    "scrollTop": -1922.4445,
+    "scrollLeft": -2389,
+    "zoomLevel": 0.79,
     "show": 431,
     "database": 2,
     "databaseName": "RRHH",
@@ -3543,18 +3543,18 @@
         "tableId": "VHRzurFIcEuNR1_5B6YUY",
         "name": "CSA_cod",
         "comment": "",
-        "dataType": "int",
+        "dataType": "int IDENTITY(1,1)",
         "default": "",
         "options": 10,
         "ui": {
           "keys": 1,
           "widthName": 60,
           "widthComment": 60,
-          "widthDataType": 60,
+          "widthDataType": 91,
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1727240052643,
+          "updateAt": 1729788204485,
           "createAt": 1727240017578
         }
       },
@@ -5946,7 +5946,7 @@
         "name": 1727240021472,
         "options(notNull)": 1727240023103,
         "options(primaryKey)": 1727240023976,
-        "dataType": 1727240052643
+        "dataType": 1729788204467
       }
     ],
     "DuYawGlNq2KAfUfZvqgy6": [
