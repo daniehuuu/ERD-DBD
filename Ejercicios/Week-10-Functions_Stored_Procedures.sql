@@ -1,11 +1,12 @@
-Use NORTHWND1
+
+USE NORTHWND1
 
 GO
 
-/*Pregunta 1 Crear una función que retorne el país de procedencia del cliente con la menor cantidad de pedidos 
-atendidos para un determinado año. */
 
---- Nombre entidades: customers / Orders
+/*Pregunta 1 Crear una funciï¿½n que retorne el paï¿½s de procedencia del cliente con la menor cantidad de pedidos 
+atendidos para un determinado aï¿½o. */
+
 
 CREATE VIEW vPaisTOrdenes
 AS
@@ -13,10 +14,6 @@ SELECT C.Country, YEAR(O.OrderDate) AS 'Fecha', COUNT(OrderID) AS 'Total Ordenes
 FROM Customers C
 INNER JOIN Orders O ON C.CustomerID=O.CustomerID
 GROUP BY C.Country, YEAR(O.OrderDate)
-
----Cosultar la vista: SELECT * FROM vPaisTOrdenes
-
----Crear la Funcion
 
 CREATE FUNCTION fPaisCliente (@y int) RETURNS TABLE
 AS
@@ -28,11 +25,113 @@ WHERE [Total Ordenes] = (Select Min([Total Ordenes])
 						 WHERE Fecha = @y)
 SELECT * FROM dbo.fPaisCliente (2016)
 
-/*Pregunta 5 Crear una función que retorne el nombre del shipper con mayor cantidad de pedidos atendidos para
-un determinado año.*/---Nombre entidades: Orders
-CREATE VIEW vNombreShippersASSELECT O.ShipName, YEAR(O.OrderDate) AS 'Fecha', COUNT(OrderID) AS 'Total Ordenes'FROM Orders OGROUP BY O.ShipName, YEAR(O.OrderDate)
+/* 2 */
+
+CREATE VIEW vCategoriaCantidad
+AS
+SELECT 
+    C.CategoryName, 
+    YEAR(O.OrderDate) AS 'Aï¿½o', 
+    SUM(OD.Quantity) AS 'TotalProductosVendidos'
+FROM 
+    [Order Details] OD
+    INNER JOIN Products P ON OD.ProductID = P.ProductID
+    INNER JOIN Categories C ON P.CategoryID = C.CategoryID
+    INNER JOIN Orders O ON OD.OrderID = O.OrderID
+GROUP BY 
+    C.CategoryName, 
+    YEAR(O.OrderDate);
+
+CREATE FUNCTION fCategoriaTopPorAï¿½o (@y INT) 
+RETURNS TABLE
+AS
+RETURN 
+    SELECT CategoryName, [TotalProductosVendidos]
+    FROM vCategoriaCantidad
+    WHERE [TotalProductosVendidos] = (
+        SELECT MAX([TotalProductosVendidos])
+        FROM vCategoriaCantidad
+        WHERE Aï¿½o = @y
+    ) AND Aï¿½o = @y;
+
+SELECT * FROM dbo.fCategoriaTopPorAï¿½o(2023);
+
+/* 3 */
+
+CREATE VIEW vOrdenesPorAï¿½o
+AS
+SELECT YEAR(O.OrderDate) AS 'Aï¿½o', COUNT(O.OrderID) AS 'TotalOrdenes'
+FROM Orders O
+GROUP BY YEAR(O.OrderDate);
+
+CREATE FUNCTION fCantidadOrdenesPorAï¿½o (@y INT) 
+RETURNS TABLE
+AS
+RETURN 
+    SELECT Aï¿½o, TotalOrdenes
+    FROM vOrdenesPorAï¿½o
+    WHERE Aï¿½o = @y;
+
+SELECT * FROM dbo.fCantidadOrdenesPorAï¿½o(2018);
+
+/* 4 */
+
+CREATE VIEW vOrdenesCompaï¿½ia
+AS
+SELECT 
+    C.Country, 
+    YEAR(O.OrderDate) AS 'Fecha', 
+    COUNT(O.OrderID) AS 'Total Ordenes'
+FROM 
+    Customers C
+INNER JOIN 
+    Orders O ON C.CustomerID = O.CustomerID
+GROUP BY 
+    C.Country, YEAR(O.OrderDate);
+
+CREATE FUNCTION fCompaï¿½iaConMasOrdenes (@y INT) 
+RETURNS TABLE
+AS
+RETURN 
+(
+    SELECT 
+        C.CompanyName, 
+        COUNT(O.OrderID) AS 'Total Ordenes'
+    FROM 
+        Customers C
+    INNER JOIN 
+        Orders O ON C.CustomerID = O.CustomerID
+    WHERE 
+        YEAR(O.OrderDate) = @y
+    GROUP BY 
+        C.CompanyName
+    HAVING 
+        COUNT(O.OrderID) = (SELECT MAX(TotalOrdenes) 
+                            FROM (
+                                SELECT COUNT(OrderID) AS TotalOrdenes
+                                FROM Orders
+                                WHERE YEAR(OrderDate) = @y
+                                GROUP BY CustomerID
+                            ) AS SubQuery)
+);
+
+SELECT * FROM dbo.fCompaï¿½iaConMasOrdenes(2016);
+
+/*Pregunta 5 Crear una funciï¿½n que retorne el nombre del shipper con mayor cantidad de pedidos atendidos para
+un determinado aï¿½o.*/
+
+---Nombre entidades: Orders
+
+CREATE VIEW vNombreShippers
+AS
+SELECT O.ShipName, YEAR(O.OrderDate) AS 'Fecha', COUNT(OrderID) AS 'Total Ordenes'
+FROM Orders O
+GROUP BY O.ShipName, YEAR(O.OrderDate)
+
 ---Crear la Funcion
-CREATE FUNCTION fNombreShipper (@y int) RETURNS TABLE
+
+
+CREATE FUNCTION fNombreShipper (@y int) RETURNS TABLE
 AS
 RETURN 
 SELECT ShipName, [Total Ordenes]
@@ -43,10 +142,54 @@ WHERE [Total Ordenes] = (Select Max([Total Ordenes])
 
 SELECT * FROM dbo.fNombreShipper (2016)
 
+/* 6 */
 
+CREATE VIEW vProveedorTOrdenes
+AS
+SELECT S.SupplierID, S.CompanyName, YEAR(O.OrderDate) AS 'Fecha', COUNT(O.OrderID) AS 'TotalOrdenes'
+FROM Suppliers S
+INNER JOIN Products P ON S.SupplierID = P.SupplierID
+INNER JOIN [Order Details] OD ON P.ProductID = OD.ProductID
+INNER JOIN Orders O ON OD.OrderID = O.OrderID
+GROUP BY S.SupplierID, S.CompanyName, YEAR(O.OrderDate);
 
+CREATE FUNCTION fProveedorMayorPedidos (@year INT) 
+RETURNS TABLE
+AS
+RETURN 
+SELECT SupplierID, CompanyName, [TotalOrdenes]
+FROM vProveedorTOrdenes
+WHERE [TotalOrdenes] = 
+(
+    SELECT MAX([TotalOrdenes])
+    FROM vProveedorTOrdenes
+    WHERE Fecha = @year
+)
+AND Fecha = @year;
 
-/*Pregunta 8 Crear un procedimiento o función que liste la relación de productos para una determinada categoría.*/
+SELECT * FROM dbo.fProveedorMayorPedidos(2017);  
+
+/* 7 */
+
+CREATE VIEW vClienteTOrdenes
+AS
+SELECT C.CustomerID, C.ContactName, C.Country, YEAR(O.OrderDate) AS 'Fecha', COUNT(O.OrderID) AS 'TotalOrdenes'
+FROM Customers C
+INNER JOIN Orders O ON C.CustomerID = O.CustomerID
+GROUP BY C.CustomerID, C.ContactName, C.Country, YEAR(O.OrderDate);
+
+CREATE FUNCTION fClienteMayorPedidos (@year INT, @pais NVARCHAR(50)) 
+RETURNS TABLE
+AS
+RETURN 
+SELECT TOP 1 ContactName, Country, [TotalOrdenes]
+FROM vClienteTOrdenes
+WHERE Fecha = @year AND Country = @pais
+ORDER BY [TotalOrdenes] DESC;
+
+SELECT * FROM dbo.fClienteMayorPedidos(2016, 'Germany');
+
+/*Pregunta 8 Crear un procedimiento o funciï¿½n que liste la relaciï¿½n de productos para una determinada categorï¿½a.*/
 
 CREATE PROCEDURE sp_listarprodcat
 @categoryName NVARCHAR(15)
@@ -59,9 +202,7 @@ WHERE C.CategoryName=@categoryName
 --- Ejecutar SP: sp:listarprodcat
 EXEC sp_listarprodcat @CategoryName= 'Produce'
 
-
-
-/*Pregunta 9  Crear un procedimiente o función que muestre los productos que comercializa un determinado 
+/*Pregunta 9  Crear un procedimiente o funciï¿½n que muestre los productos que comercializa un determinado 
 proveedor.*/
 
 CREATE PROCEDURE sp_listarprodprov
@@ -74,11 +215,87 @@ WHERE S.CompanyName=@CompanyName
 
 EXEC sp_listarprodprov 'New England Seafood Cannery'
 
+/* 10 */
 
-/* Pregunta 13  Mostrar en un procedimiento almacenado, el país donde se ha vendido más órdenes durante un año 
-ingresado como parámetro. */
+CREATE VIEW vProveedorTProductosPorPais
+AS
+SELECT S.SupplierID, S.CompanyName, C.Country, COUNT(P.ProductID) AS 'TotalProductos'
+FROM Suppliers S
+INNER JOIN Products P ON S.SupplierID = P.SupplierID
+INNER JOIN [Order Details] OD ON P.ProductID = OD.ProductID
+INNER JOIN Orders O ON OD.OrderID = O.OrderID
+INNER JOIN Customers C ON O.CustomerID = C.CustomerID
+GROUP BY S.SupplierID, S.CompanyName, C.Country;
 
-CREATE PROCEDURE sp_obtenerañopais
+CREATE FUNCTION fProveedorMayorProductos (@pais NVARCHAR(50)) 
+RETURNS TABLE
+AS
+RETURN 
+SELECT SupplierID, CompanyName, [TotalProductos]
+FROM vProveedorTProductosPorPais
+WHERE [TotalProductos] = 
+(
+    SELECT MAX([TotalProductos])
+    FROM vProveedorTProductosPorPais
+    WHERE Country = @pais
+)
+AND Country = @pais;
+
+SELECT * FROM dbo.fProveedorMayorProductos('Germany'); 
+
+/*Pregunta 11 Crear un procedimiento almacenado o una funciï¿½n que retorne la categorï¿½a de producto con la mayoria
+de ï¿½rdenes realizadas de acuerdo al paï¿½s de destino.*/
+
+CREATE PROCEDURE ObtenerCategoria
+AS
+SELECT O.ShipCountry AS Pais,C.CategoryName AS Categoria, COUNT(OD.OrderID) AS TotalOrdenes
+FROM Orders O
+JOIN [Order Details] OD ON O.OrderID = OD.OrderID
+JOIN Products P ON OD.ProductID = P.ProductID
+JOIN Categories C ON P.CategoryID = C.CategoryID
+GROUP BY O.ShipCountry, C.CategoryName
+HAVING COUNT(OD.OrderID) =
+(
+SELECT MAX(ContadorOrdenes)
+FROM (
+      SELECT COUNT(OD2.OrderID) AS ContadorOrdenes
+      FROM Orders O2
+      JOIN [Order Details] OD2 ON O2.OrderID = OD2.OrderID
+      JOIN Products P2 ON OD2.ProductID = P2.ProductID
+      WHERE O2.ShipCountry = O.ShipCountry
+      GROUP BY P2.CategoryID
+     ) AS Subquery
+)
+
+/* 12 */
+
+CREATE PROCEDURE ObtenerCategoriaMayorVenta
+AS
+    SELECT O.ShipCountry AS Pais, C.CategoryName AS Categoria, SUM(OD.UnitPrice * OD.Quantity) AS TotalVentas
+    FROM Orders O
+    JOIN [Order Details] OD ON O.OrderID = OD.OrderID
+    JOIN Products P ON OD.ProductID = P.ProductID
+    JOIN Categories C ON P.CategoryID = C.CategoryID
+    GROUP BY O.ShipCountry, C.CategoryName
+    HAVING SUM(OD.UnitPrice * OD.Quantity) =
+    (
+        SELECT MAX(VentasTotales)
+        FROM (
+              SELECT SUM(OD2.UnitPrice * OD2.Quantity) AS VentasTotales
+              FROM Orders O2
+              JOIN [Order Details] OD2 ON O2.OrderID = OD2.OrderID
+              JOIN Products P2 ON OD2.ProductID = P2.ProductID
+              JOIN Categories C2 ON P2.CategoryID = C2.CategoryID
+              WHERE O2.ShipCountry = O.ShipCountry
+              GROUP BY C2.CategoryID
+             ) AS Subquery
+    )
+
+EXEC ObtenerCategoriaMayorVenta;
+/* Pregunta 13  Mostrar en un procedimiento almacenado, el paï¿½s donde se ha vendido mï¿½s ï¿½rdenes durante un aï¿½o 
+ingresado como parï¿½metro. */
+
+CREATE PROCEDURE sp_obteneraï¿½opais
 @Year INT
 AS
 SELECT C.Country,COUNT(O.OrderID) AS 'Total_ordenes'
@@ -87,4 +304,174 @@ INNER JOIN Customers C ON O.CustomerID=C.CustomerID
 WHERE YEAR(O.OrderDate) = @Year
 GROUP BY C.Country
 ORDER BY Total_ordenes DESC
-EXEC sp_obtenerañopais '2016'
+EXEC sp_obteneraï¿½opais '2016'
+
+EXEC ObtenerCategoriaConMasOrdenesPorPais 
+
+/* 14 */
+CREATE FUNCTION dbo.fn_OrdenesPorAno(@Year INT)
+RETURNS INT
+AS
+
+    DECLARE @OrderCount INT;
+
+    SELECT @OrderCount = COUNT(*)
+    FROM Orders
+    WHERE YEAR(OrderDate) = @Year;
+
+    RETURN @OrderCount;
+
+SELECT dbo.fn_OrdenesPorAno(2023) AS TotalOrdenes;
+/* 15 */
+
+CREATE PROCEDURE sp_ProveedorMenorCantidadVendida
+    @Year INT
+AS
+BEGIN
+    SELECT TOP 1 S.SupplierID, S.CompanyName, SUM(OD.Quantity) AS TotalCantidadVendida
+    FROM Orders O
+    INNER JOIN OrderDetails OD ON O.OrderID = OD.OrderID
+    INNER JOIN Products P ON OD.ProductID = P.ProductID
+    INNER JOIN Suppliers S ON P.SupplierID = S.SupplierID
+    WHERE YEAR(O.OrderDate) = @Year
+    GROUP BY S.SupplierID, S.CompanyName
+    ORDER BY TotalCantidadVendida ASC;
+END;
+GO
+EXEC sp_ProveedorMenorCantidadVendida @Year = 2023;
+/* 16 */
+CREATE PROCEDURE spCategoriaConMenosOrdenesAï¿½o
+    @aï¿½o INT
+AS
+    SELECT 
+        Cat.CategoryName, 
+        COUNT(O.OrderID) AS 'TotalOrdenes'
+    FROM 
+        Categories Cat
+    INNER JOIN 
+        Products P ON Cat.CategoryID = P.CategoryID
+    INNER JOIN 
+        [Order Details] OD ON P.ProductID = OD.ProductID
+    INNER JOIN 
+        Orders O ON OD.OrderID = O.OrderID
+    WHERE 
+        YEAR(O.OrderDate) = @aï¿½o
+    GROUP BY 
+        Cat.CategoryName
+    ORDER BY 
+        COUNT(O.OrderID) ASC;
+
+
+EXEC spCategoriaConMenosOrdenesAï¿½o 2017;
+
+/* 17 */
+
+CREATE PROCEDURE spOrdenesPorEmbarcadorPorAï¿½o
+    @aï¿½o INT
+AS
+    SELECT 
+        S.CompanyName AS 'Shipper', 
+        COUNT(O.OrderID) AS 'TotalOrdenes'
+    FROM 
+        Shippers S
+    INNER JOIN 
+        Orders O ON S.ShipperID = O.ShipVia
+    WHERE 
+        YEAR(O.OrderDate) = @aï¿½o
+    GROUP BY 
+        S.CompanyName;
+
+EXEC spOrdenesPorEmbarcadorPorAï¿½o 2018;
+
+/* 18 */
+
+CREATE PROCEDURE spClienteConMasOrdenesPorPaisAï¿½o
+    @pais NVARCHAR(100),
+    @aï¿½o INT
+AS
+    SELECT TOP 1 
+        C.CompanyName AS 'Cliente', 
+        COUNT(O.OrderID) AS 'TotalOrdenes'
+    FROM 
+        Customers C
+    INNER JOIN 
+        Orders O ON C.CustomerID = O.CustomerID
+    WHERE 
+        O.ShipCountry = @pais
+        AND YEAR(O.OrderDate) = @aï¿½o
+    GROUP BY 
+        C.CompanyName
+    ORDER BY 
+        COUNT(O.OrderID) DESC;
+
+EXEC spClienteConMasOrdenesPorPaisAï¿½o 'USA', 2016;
+
+/*pregunta 19 Crear un procedimiento almacenado o funciï¿½n que retorne la cantidad de empleados de acuerdo a un 
+determinado paï¿½s, el cual es ingresado como parï¿½metro.*/
+
+CREATE PROCEDURE EmpleadoPais
+@Pais NVARCHAR(50)
+AS
+SELECT COUNT(*) AS CantidadDeEmpleados
+FROM Employees
+WHERE Country = @Pais
+
+EXEC EmpleadoPais 'USA'
+
+
+/* 20 */
+
+CREATE PROCEDURE spOrdenesPorPaisPorAï¿½o
+    @year INT
+AS
+
+    SELECT O.ShipCountry AS PaisDestino, COUNT(O.OrderID) AS TotalOrdenes
+    FROM Orders O
+    WHERE YEAR(O.OrderDate) = @year
+    GROUP BY O.ShipCountry
+    ORDER BY TotalOrdenes DESC;
+
+EXEC spOrdenesPorPaisPorAï¿½o 2017;
+
+/* 21 */
+
+CREATE PROCEDURE spClienteConMasOrdenes
+    @paisDestino NVARCHAR(50)
+AS
+    SELECT 
+        C.CompanyName, 
+        COUNT(O.OrderID) AS 'TotalOrdenes'
+    FROM 
+        Customers C
+    INNER JOIN 
+        Orders O ON C.CustomerID = O.CustomerID
+    WHERE 
+        O.ShipCountry = @paisDestino
+    GROUP BY 
+        C.CompanyName
+    ORDER BY 
+        COUNT(O.OrderID) DESC;
+
+EXEC spClienteConMasOrdenes 'USA';
+
+
+/* 22 */
+
+CREATE PROCEDURE spShipperConMasPedidosPorPais
+    @paisDestino NVARCHAR(50)
+AS
+SELECT 
+        S.CompanyName, 
+        COUNT(O.OrderID) AS 'TotalPedidos'
+    FROM 
+        Shippers S
+    INNER JOIN 
+        Orders O ON S.ShipperID = O.ShipVia
+    WHERE 
+        O.ShipCountry = @paisDestino
+    GROUP BY 
+        S.CompanyName
+    ORDER BY 
+        COUNT(O.OrderID) DESC;
+
+EXEC spShipperConMasPedidosPorPais 'USA';
