@@ -176,3 +176,63 @@ FROM Empleado E
 JOIN Licencia L ON E.EMP_cod = L.EMP_cod
 JOIN Asistencia A ON E.EMP_cod = A.EMP_cod
 WHERE A.AST_fec_ent BETWEEN L.LIC_fec_ini AND L.LIC_fic_fin
+
+--13. 
+SELECT 
+    E.EMP_cod AS ID_Emp,
+    E.EMP_nom AS Nombre,
+    E.EMP_ape_p AS Apellido_Paterno,
+    E.EMP_ape_m AS Apellido_Materno,
+    E.EMP_tel AS Numero_Celular,
+    E.EMP_fec_ing AS Fecha_Ingreso,
+    E.EMP_fec_ces AS Fecha_Cese,
+    C.CAR_desc AS Cargo,
+    CN.CTR_mot_ter AS Motivo_Termino
+FROM 
+    Empleado E
+JOIN 
+    Cargo C ON E.CAR_cod = C.CAR_cod
+JOIN 
+    Contrato CN ON E.EMP_cod = CN.EMP_cod
+WHERE 
+    E.EMP_fec_ces IS NOT NULL -- Filtra los empleados con fecha de cese
+    AND CN.CTR_mot_ter IS NOT NULL -- Asegura que tengan un motivo de término
+ORDER BY 
+    E.EMP_fec_ces DESC
+
+--14.Mostrar contratos donde los empleados tienen una condición de tiempo completo y contar cuántos hay por tipo de contrato
+SELECT 
+    C.CTR_tip_con, 
+    COUNT(*) AS Total_Contratos,
+    SUM(C.CTR_sld_bsc) AS Sueldo_Total
+FROM 
+    Contrato C
+JOIN 
+    Empleado E ON C.EMP_cod = E.EMP_cod
+JOIN 
+    Condicion_Trabajo CT ON E.CTB_cod = CT.CTB_cod
+WHERE 
+    CT.CTB_desc = 'Tiempo Completo'
+GROUP BY 
+    C.CTR_tip_con
+HAVING 
+    COUNT(*) > 1
+ORDER BY 
+    Sueldo_Total DESC
+
+--15.Mostrar todos los contratos y el nombre del empleado, incluyendo una indicación si el contrato está activo
+SELECT 
+    C.CTR_cod, 
+    E.EMP_nom, 
+    C.CTR_tip_con, 
+    CASE 
+        WHEN GETDATE() BETWEEN C.CTR_fec_ini AND C.CTR_fec_fin THEN 'Activo'
+        ELSE 'Inactivo' 
+    END AS Estado_Contrato
+FROM 
+    Contrato C
+JOIN 
+    Empleado E ON C.EMP_cod = E.EMP_cod
+ORDER BY 
+    Estado_Contrato DESC, 
+    E.EMP_nom ASC
