@@ -134,3 +134,43 @@ LEFT JOIN
     Cargo C ON E.CAR_cod = C.CAR_cod
 ORDER BY 
     Nombre_AFP, Nombre_Cargo
+
+/*10
+Consulta para obtener empleados y detalles de licencias y asistencias en conflicto.
+Se busca identificar a los empleados que tienen registros de asistencia durante el período en que estaban de licencia.
+Se realiza un JOIN entre las tablas Empleado, Licencia y Asistencia, y se aplican condiciones para verificar si
+las fechas de asistencia (entrada o salida) coinciden con las fechas de una licencia.
+*/
+SELECT E.EMP_nom, E.EMP_ape_p, E.EMP_ape_m, L.LIC_fec_ini, L.LIC_fic_fin, A.AST_fec_ent, A.AST_fec_sal
+FROM Empleado E
+JOIN Licencia L ON E.EMP_cod = L.EMP_cod
+JOIN Asistencia A ON E.EMP_cod = A.EMP_cod
+WHERE (A.AST_fec_ent BETWEEN L.LIC_fec_ini AND L.LIC_fic_fin)
+   OR (A.AST_fec_sal BETWEEN L.LIC_fec_ini AND L.LIC_fic_fin)
+
+/*11
+Consulta de resumen de licencias y asistencias en un año específico (2024).
+Esta consulta cuenta el número de licencias y asistencias que tuvo cada empleado en el año 2024.
+Se realiza un LEFT JOIN para incluir empleados que podrían no tener licencias o asistencias, y se filtra por año.
+El resultado agrupa por empleado y año, mostrando aquellos con al menos una licencia o asistencia.
+*/
+SELECT E.EMP_nom, E.EMP_ape_p, E.EMP_ape_m,
+       COUNT(DISTINCT L.LIC_cod) AS num_licencias,
+       COUNT(DISTINCT A.AST_cod) AS num_asistencias,
+       YEAR(L.LIC_fec_ini) AS año
+FROM Empleado E
+LEFT JOIN Licencia L ON E.EMP_cod = L.EMP_cod AND YEAR(L.LIC_fec_ini) = 2024
+LEFT JOIN Asistencia A ON E.EMP_cod = A.EMP_cod AND YEAR(A.AST_fec_ent) = 2024
+GROUP BY E.EMP_nom, E.EMP_ape_p, E.EMP_ape_m, YEAR(L.LIC_fec_ini)
+HAVING COUNT(DISTINCT L.LIC_cod) > 0 OR COUNT(DISTINCT A.AST_cod) > 0
+
+/*12
+Consulta para obtener empleados que asistieron durante sus licencias.
+Se busca a aquellos empleados que tienen registros de asistencia dentro del rango de fechas de alguna licencia.
+Se realiza un JOIN entre las tablas Empleado, Licencia y Asistencia, y se aplican filtros en base a la fecha de asistencia.
+*/
+SELECT E.EMP_nom, E.EMP_ape_p, E.EMP_ape_m, L.LIC_fec_ini, L.LIC_fic_fin, A.AST_fec_ent
+FROM Empleado E
+JOIN Licencia L ON E.EMP_cod = L.EMP_cod
+JOIN Asistencia A ON E.EMP_cod = A.EMP_cod
+WHERE A.AST_fec_ent BETWEEN L.LIC_fec_ini AND L.LIC_fic_fin
