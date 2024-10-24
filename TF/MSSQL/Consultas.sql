@@ -59,13 +59,13 @@ SELECT
     E.EMP_ape_p AS Apellido_Paterno, 
     C.CAR_Desc AS Cargo_Actual, 
     E.EMP_sld_bsc AS Salario_Base_Actual,
+    E.EMP_fec_ces AS Fecha_Cese_Actual,
 
     -- Subconsulta para obtener los datos del cargo anterior y fechas
     HL2.CAR_Desc AS Cargo_Anterior,
     HL2.HIS_sld_bsc AS Salario_Base_Anterior,
     HL2.HIS_fec_in AS Fecha_Inicio_Anterior,
     HL2.HIS_fec_fin AS Fecha_Cese_Anterior
-
 FROM Empleado E
 INNER JOIN Cargo C ON E.CAR_cod = C.CAR_cod
 LEFT JOIN (
@@ -132,6 +132,8 @@ LEFT JOIN
     AFP A ON E.AFP_cod = A.AFP_cod
 LEFT JOIN 
     Cargo C ON E.CAR_cod = C.CAR_cod
+WHERE 
+    E.EMP_fec_ces IS NULL
 ORDER BY 
     Nombre_AFP, Nombre_Cargo
 
