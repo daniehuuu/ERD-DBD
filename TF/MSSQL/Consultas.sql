@@ -46,11 +46,11 @@ JOIN Parentesco P ON F.PAR_cod = P.PAR_cod
 WHERE F.FAM_sex = 'M' AND F.FAM_fec_nac > '1990-01-01'
 
 --6.Ordena los familiares por apellido en orden alfabetico
---Falta mostrar el nombre y apellido del empleado
-SELECT FE.FAM_cod AS 'Código de Familiar', F.FAM_nom AS 'Nombre del Familiar', F.FAM_ape_p AS 'Apellido Paterno', FE.EMP_cod AS 'Código de Empleado'
+SELECT FE.FAM_cod AS 'Código del Familiar', F.FAM_nom AS 'Nombre del Familiar', F.FAM_ape_p AS 'Apellido Paterno del Familiar', FE.EMP_cod AS 'Código de Empleado', E.EMP_nom AS 'Nombre del Empleado', E.EMP_ape_p AS 'Apellido Paterno del Empleado'
 FROM FAM_EMP FE
 JOIN Familiar F ON FE.FAM_cod = F.FAM_cod
-ORDER BY F.FAM_ape_p, F.FAM_nom
+JOIN Empleado E ON FE.EMP_cod = E.EMP_cod
+ORDER BY F.FAM_ape_p, F.FAM_nom;
 
 --7.Muestra el cargo y salario actual, y el cargo y salario inmediato anterior de todos los empleados.
 SELECT 
