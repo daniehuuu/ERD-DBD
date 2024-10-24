@@ -110,3 +110,27 @@ LEFT JOIN (
 ) HL ON E.EMP_cod = HL.EMP_cod
 LEFT JOIN Cargo C2 ON HL.CAR_cod = C2.CAR_cod
 ORDER BY Primer_Cargo
+
+--9.Muestra el total de deducciones, salario neto, AFP Y Cargo de los empleados
+SELECT 
+    E.EMP_cod,
+    E.EMP_nom,
+    E.EMP_ape_p,
+    E.EMP_ape_m,
+    E.EMP_sld_bsc AS Sueldo_Basico,
+    (SELECT SUM(CS.CSA_mon) 
+     FROM Calculo_Salario CS 
+     WHERE CS.EMP_cod = E.EMP_cod AND CS.CSA_tipo = 0) AS Total_Deducciones,
+    E.EMP_sld_bsc - (SELECT SUM(CS.CSA_mon) 
+                      FROM Calculo_Salario CS 
+                      WHERE CS.EMP_cod = E.EMP_cod AND CS.CSA_tipo = 0) AS Salario_Neto,
+    A.AFP_desc AS Nombre_AFP,
+    C.CAR_desc AS Nombre_Cargo
+FROM 
+    Empleado E
+LEFT JOIN 
+    AFP A ON E.AFP_cod = A.AFP_cod
+LEFT JOIN 
+    Cargo C ON E.CAR_cod = C.CAR_cod
+ORDER BY 
+    Nombre_AFP, Nombre_Cargo

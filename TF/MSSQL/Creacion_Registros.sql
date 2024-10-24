@@ -243,3 +243,57 @@ VALUES
 (8, 9, 2, '2020-09-01', '2022-08-01', 4600.00), 
 (9, 7, 7, '2016-09-01', '2017-09-01', 4200.00),   
 (10, 7, 8, '2017-10-01', '2019-09-01', 4400.00) 
+
+--Inserción de registros de Calculo_Salario. Se considera únicamente el sueldo básico y las deducciones por AFP.
+CREATE PROCEDURE InsertCalculoSalario
+AS
+BEGIN
+    DECLARE @EMP_cod INT, 
+            @EMP_sld_bsc DECIMAL(10, 2), 
+            @AFP_apor_obl DECIMAL(4, 2), 
+            @AFP_seg DECIMAL(4, 2), 
+            @AFP_com DECIMAL(4, 2);
+    
+    DECLARE @AFP_obl_amount DECIMAL(10, 2), 
+            @seguro_amount DECIMAL(10, 2), 
+            @comision_amount DECIMAL(10, 2);
+
+    -- Cursor to iterate through each employee
+    DECLARE employee_cursor CURSOR FOR
+    SELECT E.EMP_cod, E.EMP_sld_bsc, A.AFP_apor_obl, A.AFP_seg, A.AFP_com
+    FROM Empleado E
+    JOIN AFP A ON E.AFP_cod = A.AFP_cod;
+
+    OPEN employee_cursor;
+
+    FETCH NEXT FROM employee_cursor INTO @EMP_cod, @EMP_sld_bsc, @AFP_apor_obl, @AFP_seg, @AFP_com;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Insert basic salary record
+        INSERT INTO Calculo_Salario (EMP_cod, CSA_mon, CSA_desc, CSA_fec_ini, CSA_fec_fin, CSA_tipo)
+        VALUES (@EMP_cod, @EMP_sld_bsc, 'Sueldo básico', '2024-10-01', '2024-10-31', 1); 
+
+        -- Calculate deductions
+        SET @AFP_obl_amount = @EMP_sld_bsc * (@AFP_apor_obl / 100);
+        SET @seguro_amount = @EMP_sld_bsc * (@AFP_seg / 100);
+        SET @comision_amount = @EMP_sld_bsc * (@AFP_com / 100);
+
+        -- Insert deduction records
+        INSERT INTO Calculo_Salario (EMP_cod, CSA_mon, CSA_desc, CSA_fec_ini, CSA_fec_fin, CSA_tipo)
+        VALUES (@EMP_cod, @AFP_obl_amount, 'Aporte obligatorio', '2024-10-01', '2024-10-31', 0); 
+
+        INSERT INTO Calculo_Salario (EMP_cod, CSA_mon, CSA_desc, CSA_fec_ini, CSA_fec_fin, CSA_tipo)
+        VALUES (@EMP_cod, @seguro_amount, 'Seguro', '2024-10-01', '2024-10-31', 0); 
+
+        INSERT INTO Calculo_Salario (EMP_cod, CSA_mon, CSA_desc, CSA_fec_ini, CSA_fec_fin, CSA_tipo)
+        VALUES (@EMP_cod, @comision_amount, 'Comisión', '2024-10-01', '2024-10-31', 0); 
+
+        FETCH NEXT FROM employee_cursor INTO @EMP_cod, @EMP_sld_bsc, @AFP_apor_obl, @AFP_seg, @AFP_com;
+    END;
+
+    CLOSE employee_cursor;
+    DEALLOCATE employee_cursor;
+END
+
+EXEC InsertCalculoSalario
