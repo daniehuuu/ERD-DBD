@@ -177,7 +177,7 @@ JOIN Licencia L ON E.EMP_cod = L.EMP_cod
 JOIN Asistencia A ON E.EMP_cod = A.EMP_cod
 WHERE A.AST_fec_ent BETWEEN L.LIC_fec_ini AND L.LIC_fic_fin
 
---13. 
+--13.Selecciona empleados con fecha de cese y muestra el motivo 
 SELECT 
     E.EMP_cod AS ID_Emp,
     E.EMP_nom AS Nombre,
