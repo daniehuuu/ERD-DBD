@@ -121,8 +121,8 @@ INSERT INTO Empleado (EMP_cod, CTB_cod, SDV_cod, EMP_nom, EMP_ape_p, EMP_ape_m, 
 (3, 1, 6, 'Carlos', 'Lopez', 'Garcia', 1, '12345670', 'Peru', 'M', '1987-03-03', 'Av. Siempre Viva 125', '987654323', '2012-03-01', NULL, 7, 1, 'CUSPP003', 3400.00),
 (4, 2, 6, 'Ana', 'Martinez', 'Rodriguez', 1, '12345671', 'Peru', 'F', '1988-04-04', 'Av. Siempre Viva 126', '987654324', '2013-04-01', NULL, 7, 2, 'CUSPP004', 3600.00),
 (5, 1, 6, 'Luis', 'Garcia', 'Hernandez', 1, '12345672', 'Peru', 'M', '1989-05-05', 'Av. Siempre Viva 127', '987654325', '2014-05-01', NULL, 7, 1, 'CUSPP005', 3800.00),
-(6, 2, 6, 'Elena', 'Rodriguez', 'Lopez', 1, '12345673', 'Peru', 'F', '1990-06-06', 'Av. Siempre Viva 128', '987654326', '2015-06-01', '2016-05-01', 7, 2, 'CUSPP006', 4000.00),
-(7, 1, 6, 'Miguel', 'Hernandez', 'Martinez', 1, '12345674', 'Peru', 'M', '1991-07-07', 'Av. Siempre Viva 129', '987654327', '2016-07-01', '2016-08-01', 7, 1, 'CUSPP007', 4200.00),
+(6, 2, 6, 'Elena', 'Rodriguez', 'Lopez', 1, '12345673', 'Peru', 'F', '1990-06-06', 'Av. Siempre Viva 128', '987654326', '2015-06-01', '2020-05-01', 7, 2, 'CUSPP006', 4000.00),
+(7, 1, 6, 'Miguel', 'Hernandez', 'Martinez', 1, '12345674', 'Peru', 'M', '1991-07-07', 'Av. Siempre Viva 129', '987654327', '2016-07-01', '2020-08-01', 7, 1, 'CUSPP007', 4200.00),
 (8, 2, 6, 'Laura', 'Fernandez', 'Garcia', 1, '12345675', 'Peru', 'F', '1992-08-08', 'Av. Siempre Viva 130', '987654328', '2017-08-01', NULL, 4, 2, 'CUSPP008', 4400.00),
 (9, 1, 5, 'Jose', 'Sanchez', 'Rodriguez', 1, '12345676', 'Peru', 'M', '1993-09-09', 'Av. Siempre Viva 131', '987654329', '2018-09-01', NULL, 10, 1, 'CUSPP009', 4600.00),
 (10, 2, 3, 'Lucia', 'Ramirez', 'Hernandez', 1, '12345677', 'Peru', 'F', '1994-10-10', 'Av. Siempre Viva 132', '987654330', '2019-10-01', NULL, 1, 2, 'CUSPP010', 4800.00),
@@ -269,7 +269,8 @@ BEGIN
     DECLARE employee_cursor CURSOR FOR
     SELECT E.EMP_cod, E.EMP_sld_bsc, A.AFP_apor_obl, A.AFP_seg, A.AFP_com
     FROM Empleado E
-    JOIN AFP A ON E.AFP_cod = A.AFP_cod;
+    JOIN AFP A ON E.AFP_cod = A.AFP_cod
+    WHERE E.EMP_fec_ces IS NULL;
 
     OPEN employee_cursor;
 
@@ -304,3 +305,26 @@ BEGIN
 END
 
 EXEC InsertCalculoSalario
+
+INSERT INTO Contrato (CTR_cod, EMP_cod, CTR_tip_con, CTR_fec_ini, CTR_fec_fin, CTR_sld_bsc, CTR_per_prueb, CTR_mot_ter)
+VALUES
+(1, 1, 'Indefinido', '2024-01-01', '2025-01-01', 2500.00, 3, NULL),
+(2, 2, 'Indefinido', '2024-01-01', '2025-01-01', 2800.00, 3, NULL),
+(3, 3, 'Temporal', '2024-01-01', '2024-12-31', 3000.00, 2, NULL),
+(4, 4, 'Indefinido', '2024-01-01', '2025-01-01', 2600.00, 3, NULL),
+(5, 5, 'Indefinido', '2024-01-01', '2025-01-01', 3200.00, 3, NULL),
+(6, 6, 'Temporal', '2024-01-01', '2024-11-30', 2900.00, 2, 'Necesidad de aumento de personal'),
+(7, 7, 'Indefinido', '2024-01-01', '2025-01-01', 3100.00, 3, 'Irresponsabilidad laboral prolongada'),
+(8, 8, 'Indefinido', '2024-01-01', '2025-01-01', 2700.00, 3, NULL),
+(9, 9, 'Indefinido', '2024-01-01', '2025-01-01', 3400.00, 3, NULL),
+(10, 10, 'Temporal', '2024-01-01', '2024-10-31', 3000.00, 2, NULL),
+(11, 11, 'Indefinido', '2024-01-01', '2025-01-01', 3600.00, 3, NULL),
+(12, 12, 'Temporal', '2024-02-01', '2024-12-31', 2800.00, 2, NULL),
+(13, 13, 'Indefinido', '2024-03-01', '2025-03-01', 3300.00, 3, NULL),
+(14, 14, 'Indefinido', '2024-04-01', '2025-04-01', 3700.00, 3, NULL),
+(15, 15, 'Temporal', '2024-03-15', '2024-11-30', 2700.00, 2, NULL),
+(16, 16, 'Indefinido', '2024-01-15', '2025-01-15', 3200.00, 3, NULL),
+(17, 17, 'Indefinido', '2024-02-15', '2025-02-15', 3500.00, 3, NULL),
+(18, 18, 'Temporal', '2024-05-01', '2024-09-30', 2500.00, 2, NULL),
+(19, 19, 'Indefinido', '2024-06-01', '2025-06-01', 3400.00, 3, NULL),
+(20, 20, 'Temporal', '2024-07-01', '2024-12-31', 3100.00, 2, NULL)
