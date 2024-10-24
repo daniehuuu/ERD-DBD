@@ -236,3 +236,90 @@ JOIN
 ORDER BY 
     Estado_Contrato DESC, 
     E.EMP_nom ASC
+
+/*16.Empleados que esten en ventas nacionales y trabajen a Medio Tiempo */
+SELECT 
+    E.EMP_nom AS Nombre_Empleado,
+    E.EMP_ape_p AS Apellido_Paterno,
+    E.EMP_ape_m AS Apellido_Materno,
+    E.EMP_num_iden AS Documento_Identidad,
+    SD.SDV_nom AS Subdivision,
+    CT.CTB_desc AS Condicion_Trabajo
+FROM 
+    Empleado E
+JOIN 
+    Sub_division SD ON E.SDV_cod = SD.SDV_cod
+JOIN 
+    Condicion_Trabajo CT ON E.CTB_cod = CT.CTB_cod
+WHERE 
+    SD.SDV_nom = 'Ventas Nacionales'  
+    AND CT.CTB_desc = 'Medio Tiempo'  
+ORDER BY 
+    E.EMP_nom
+
+/*17.Cuantas Sub-Divisiones cuenta cada Division */
+SELECT D.DIV_nom AS Division, COUNT(SD.SDV_cod) AS TotalSubDivisiones
+FROM Division D
+LEFT JOIN Sub_division SD ON D.DIV_cod = SD.DIV_cod
+GROUP BY D.DIV_nom
+ORDER BY TotalSubDivisiones DESC;
+
+/*18. Encontar empleado con un salario mayor a 2000 y que su fecha de ingreso sea mayor a '2020-01-01' */
+SELECT 
+    E.EMP_nom AS Nombre_Empleado,
+    E.EMP_ape_p AS Apellido_Paterno,
+    E.EMP_ape_m AS Apellido_Materno,
+    E.EMP_num_iden AS Documento_Identidad,
+    SD.SDV_nom AS Subdivision,
+    D.DIV_nom AS Division,
+    CT.CTB_desc AS Condicion_Trabajo,
+    E.EMP_fec_ing AS Fecha_Ingreso,
+    E.EMP_sld_bsc AS Salario_Basico
+FROM 
+    Empleado E
+JOIN 
+    Sub_division SD ON E.SDV_cod = SD.SDV_cod
+JOIN 
+    Division D ON SD.DIV_cod = D.DIV_cod
+JOIN
+    Condicion_Trabajo CT ON E.CTB_cod = CT.CTB_cod
+WHERE 
+    E.EMP_fec_ing > '2020-01-01'  
+    AND E.EMP_sld_bsc > 2000      
+ORDER BY 
+    D.DIV_nom, SD.SDV_nom, E.EMP_nom
+
+--19. Calcular salario neto de los empleados
+SELECT 
+    E.EMP_cod,
+    E.EMP_nom,
+    E.EMP_ape_p,
+    E.EMP_ape_m,
+    E.EMP_sld_bsc AS Sueldo_Basico,
+    ISNULL(SUM(CASE WHEN CS.CSA_tipo = 0 THEN CS.CSA_mon ELSE 0 END), 0) AS Total_Deducciones,
+    E.EMP_sld_bsc - ISNULL(SUM(CASE WHEN CS.CSA_tipo = 0 THEN CS.CSA_mon ELSE 0 END), 0) AS Salario_Neto
+FROM 
+    Empleado E
+LEFT JOIN 
+    Calculo_Salario CS ON E.EMP_cod = CS.EMP_cod
+WHERE 
+    E.EMP_fec_ces IS NULL
+GROUP BY 
+    E.EMP_cod, E.EMP_nom, E.EMP_ape_p, E.EMP_ape_m, E.EMP_sld_bsc
+ORDER BY 
+    E.EMP_cod
+
+--20. Mostrar el promedio de salario básico por cada división
+SELECT 
+    D.DIV_nom AS Division,
+    AVG(E.EMP_sld_bsc) AS Promedio_Salario_Basico
+FROM 
+    Empleado E
+JOIN 
+    Sub_division SD ON E.SDV_cod = SD.SDV_cod
+JOIN 
+    Division D ON SD.DIV_cod = D.DIV_cod
+GROUP BY 
+    D.DIV_nom
+ORDER BY 
+    Promedio_Salario_Basico DESC
