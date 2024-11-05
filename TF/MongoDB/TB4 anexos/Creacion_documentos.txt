@@ -1,0 +1,24 @@
+db.Division.insertMany([
+            { _id: 1, DIV_nom: 'Recursos humanos', DIV_ubi_fis: 'Edificio A' },
+            { _id: 2, DIV_nom: 'Finanzas', DIV_ubi_fis: 'Edificio B' },
+            { _id: 3, DIV_nom: 'Tecnología', DIV_ubi_fis: 'Edificio C' },
+            { _id: 4, DIV_nom: 'Marketing', DIV_ubi_fis: 'Edificio D' },
+            { _id: 5, DIV_nom: 'Ventas', DIV_ubi_fis: 'Edificio E' },
+            { _id: 6, DIV_nom: 'Investigación y Desarrollo', DIV_ubi_fis: 'Edificio F' },
+            { _id: 7, DIV_nom: 'Operaciones', DIV_ubi_fis: 'Edificio G' },
+            { _id: 8, DIV_nom: 'Legal', DIV_ubi_fis: 'Edificio H' },
+            { _id: 9, DIV_nom: 'Atención al cliente', DIV_ubi_fis: 'Edificio I' },
+            { _id: 10, DIV_nom: 'Compras', DIV_ubi_fis: 'Edificio J' }
+        ]);
+
+db.AFP.insertMany([
+            { _id: 2, AFP_desc: 'AFP Integra', AFP_apor_obl: Double(11.0), AFP_seg: 1.1, AFP_com: 0.35 },
+            { _id: 3, AFP_desc: 'AFP Prima', AFP_apor_obl: 10.8, AFP_seg: 1.3, AFP_com: 0.32 },
+            { _id: 4, AFP_desc: 'AFP Profuturo', AFP_apor_obl: 10.9, AFP_seg: 1.2, AFP_com: 0.33 },
+            { _id: 5, AFP_desc: 'AFP Habitat', AFP_apor_obl: 11.2, AFP_seg: 1.4, AFP_com: 0.31 },
+            { _id: 6, AFP_desc: 'AFP Capital', AFP_apor_obl: 10.7, AFP_seg: 1.5, AFP_com: 0.28 },
+            { _id: 7, AFP_desc: 'AFP Crecer', AFP_apor_obl: 11.1, AFP_seg: 1.1, AFP_com: 0.34 },
+            { _id: 8, AFP_desc: 'AFP Futuro', AFP_apor_obl: 10.6, AFP_seg: 1.3, AFP_com: 0.29 },
+            { _id: 9, AFP_desc: 'AFP Vida', AFP_apor_obl: 11.3, AFP_seg: 1.2, AFP_com: 0.32 },
+            { _id: 10, AFP_desc: 'AFP Seguro', AFP_apor_obl: 10.5, AFP_seg: 1.4, AFP_com: 0.3 }
+        ]);

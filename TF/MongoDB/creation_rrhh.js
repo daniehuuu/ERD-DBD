@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, Double } = require('mongodb');
 
 async function main() {
     // Connection URI and Database name
@@ -14,8 +14,6 @@ async function main() {
 
         /*
         CREACIÓN DE COLECCIONES
-        */
-
         await db.createCollection("Licencia", {
             validator: {
                 $jsonSchema: {
@@ -23,9 +21,9 @@ async function main() {
                     title: "Licencia",
                     required: ["_id", "EMP_id", "TLI_id", "LIC_fec_sol", "LIC_fec_ini", "LIC_fic_fin"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
-                        "EMP_id": { bsonType: "objectId" },
-                        "TLI_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
+                        "EMP_id": { bsonType: "int" },
+                        "TLI_id": { bsonType: "int" },
                         "LIC_fec_sol": { bsonType: "date" },
                         "LIC_fec_ini": { bsonType: "date" },
                         "LIC_fic_fin": { bsonType: "date" },
@@ -42,7 +40,7 @@ async function main() {
                     title: "Empleado",
                     required: ["_id", "CTB_id", "SDV_id", "EMP_cta", "EMP_nom", "EMP_ape_p", "EMP_ape_m", "EMP_ident", "EMP_nac", "EMP_sex", "EMP_fec_nac", "EMP_dir", "EMP_tel", "EMP_fec_ing", "EMP_fec_ces", "CAR_id", "AFP_id", "EMP_sld_bsc"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "CTB_id": { bsonType: "string" },
                         "SDV_id": { bsonType: "string" },
                         "EMP_cta": {
@@ -69,6 +67,16 @@ async function main() {
                                 "EMP_num": { bsonType: "string" },
                             },
                         },
+                        "EMP_fam": {
+                            bsonType: "array",
+                            items: {
+                                bsonType: "object",
+                                required: ["FAM_id"],
+                                properties: {
+                                    "FAM_id": { bsonType: "int" },
+                                }
+                            }
+                        },
                         "EMP_nac": { bsonType: "date" },
                         "EMP_sex": { bsonType: "string" },
                         "EMP_fec_nac": { bsonType: "date" },
@@ -78,7 +86,7 @@ async function main() {
                         "EMP_fec_ces": { bsonType: "date" },
                         "CAR_id": { bsonType: "string" },
                         "AFP_id": { bsonType: "string" },
-                        "EMP_sld_bsc": { bsonType: "decimal" },
+                        "EMP_sld_bsc": { bsonType: "double" },
                     },
                 },
             },
@@ -91,7 +99,7 @@ async function main() {
                     title: "Condicion_Trabajo",
                     required: ["_id", "CTB_desc"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "CTB_desc": { bsonType: "string" },
                     },
                 },
@@ -105,7 +113,7 @@ async function main() {
                     title: "Cargo",
                     required: ["_id", "CAR_desc"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "CAR_desc": { bsonType: "string" },
                     },
                 },
@@ -119,10 +127,10 @@ async function main() {
                     title: "Calculo_Salario",
                     required: ["_id", "EMP_id", "CSA_tipo", "CSA_mon", "CSA_desc", "CSA_fec_ini", "CSA_fec_fin"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
-                        "EMP_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
+                        "EMP_id": { bsonType: "int" },
                         "CSA_tipo": { bsonType: "int" },
-                        "CSA_mon": { bsonType: "decimal" },
+                        "CSA_mon": { bsonType: "double" },
                         "CSA_desc": { bsonType: "string" },
                         "CSA_fec_ini": { bsonType: "date" },
                         "CSA_fec_fin": { bsonType: "date" },
@@ -138,8 +146,8 @@ async function main() {
                     title: "Asistencia",
                     required: ["_id", "EMP_id", "AST_fec_ent", "AST_hora_ent", "AST_fec_sal", "AST_hora_sal"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
-                        "EMP_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
+                        "EMP_id": { bsonType: "int" },
                         "AST_fec_ent": { bsonType: "date" },
                         "AST_hora_ent": { bsonType: "timestamp" },
                         "AST_fec_sal": { bsonType: "date" },
@@ -156,11 +164,11 @@ async function main() {
                     title: "AFP",
                     required: ["_id", "AFP_desc", "AFP_apor_obl", "AFP_seg", "AFP_com"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "AFP_desc": { bsonType: "string" },
-                        "AFP_apor_obl": { bsonType: "decimal" },
-                        "AFP_seg": { bsonType: "decimal" },
-                        "AFP_com": { bsonType: "decimal" },
+                        "AFP_apor_obl": { bsonType: "double" },
+                        "AFP_seg": { bsonType: "double" },
+                        "AFP_com": { bsonType: "double" },
                     },
                 },
             },
@@ -173,12 +181,12 @@ async function main() {
                     title: "Contrato",
                     required: ["_id", "EMP_id", "CTR_tip_con", "CTR_fec_ini", "CTR_fec_fin", "CTR_sld_bsc"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
-                        "EMP_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
+                        "EMP_id": { bsonType: "int" },
                         "CTR_tip_con": { bsonType: "string" },
                         "CTR_fec_ini": { bsonType: "date" },
                         "CTR_fec_fin": { bsonType: "date" },
-                        "CTR_sld_bsc": { bsonType: "decimal" },
+                        "CTR_sld_bsc": { bsonType: "double" },
                         "CTR_per_prueb": { bsonType: "int" },
                         "CTR_mot_ter": { bsonType: "string" },
                     },
@@ -193,8 +201,8 @@ async function main() {
                     title: "Vacaciones",
                     required: ["_id", "EMP_id", "VAC_fec_sol", "VAC_fec_ini", "VAC_fec_fin"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
-                        "EMP_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
+                        "EMP_id": { bsonType: "int" },
                         "VAC_fec_sol": { bsonType: "date" },
                         "VAC_fec_ini": { bsonType: "date" },
                         "VAC_fec_fin": { bsonType: "date" },
@@ -211,7 +219,7 @@ async function main() {
                     title: "Tipo_Licencia",
                     required: ["_id", "TLI_desc", "TLI_rem"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "TLI_desc": { bsonType: "string" },
                         "TLI_rem": { bsonType: "int" },
                     },
@@ -226,9 +234,9 @@ async function main() {
                     title: "Sub_division",
                     required: ["_id", "SDV_nom", "DIV_id"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "SDV_nom": { bsonType: "string" },
-                        "DIV_id": { bsonType: "objectId" },
+                        "DIV_id": { bsonType: "int" },
                     },
                 },
             },
@@ -241,7 +249,7 @@ async function main() {
                     title: "Division",
                     required: ["_id", "DIV_nom", "DIV_ubi_fis"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "DIV_nom": { bsonType: "string" },
                         "DIV_ubi_fis": { bsonType: "string" },
                     },
@@ -256,11 +264,11 @@ async function main() {
                     title: "Beneficios",
                     required: ["_id", "EMP_id", "TBE_id", "BEN_fec", "BEN_mon"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
-                        "EMP_id": { bsonType: "objectId" },
-                        "TBE_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
+                        "EMP_id": { bsonType: "int" },
+                        "TBE_id": { bsonType: "int" },
                         "BEN_fec": { bsonType: "date" },
-                        "BEN_mon": { bsonType: "decimal" },
+                        "BEN_mon": { bsonType: "double" },
                     },
                 },
             },
@@ -273,7 +281,7 @@ async function main() {
                     title: "Tipo_Beneficio",
                     required: ["_id", "TBE_desc"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "TBE_desc": { bsonType: "string" },
                     },
                 },
@@ -287,23 +295,8 @@ async function main() {
                     title: "Parentesco",
                     required: ["_id", "PAR_desc"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
                         "PAR_desc": { bsonType: "string" },
-                    },
-                },
-            },
-        });
-
-        await db.createCollection("FAM_EMP", {
-            validator: {
-                $jsonSchema: {
-                    bsonType: "object",
-                    title: "FAM_EMP",
-                    required: ["_id", "FAM_id", "EMP_id"],
-                    properties: {
-                        "_id": { bsonType: "string" },
-                        "FAM_id": { bsonType: "objectId" },
-                        "EMP_id": { bsonType: "objectId" },
                     },
                 },
             },
@@ -316,8 +309,8 @@ async function main() {
                     title: "Familiar",
                     required: ["_id", "PAR_id", "FAM_ident", "FAM_nom", "FAM_ape_p", "FAM_ape_m", "FAM_fec_nac", "FAM_sex"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
-                        "PAR_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
+                        "PAR_id": { bsonType: "int" },
                         "FAM_ident": {
                             bsonType: "object",
                             title: "FAM_ident",
@@ -345,22 +338,24 @@ async function main() {
                     title: "Historial_Laboral",
                     required: ["_id", "EMP_id", "CAR_id", "HIS_fec_in", "HIS_fec_fin", "HIS_sld_bsc"],
                     properties: {
-                        "_id": { bsonType: "objectId" },
-                        "EMP_id": { bsonType: "objectId" },
-                        "CAR_id": { bsonType: "objectId" },
+                        "_id": { bsonType: "int" },
+                        "EMP_id": { bsonType: "int" },
+                        "CAR_id": { bsonType: "int" },
                         "HIS_fec_in": { bsonType: "date" },
                         "HIS_fec_fin": { bsonType: "date" },
-                        "HIS_sld_bsc": { bsonType: "decimal" },
+                        "HIS_sld_bsc": { bsonType: "double" },
                     },
                 },
             },
         });
+        FIN DE LA CREACIÓN DE COLECCIONES
+        */
         
         /*
         CREACIÓN DE DOCUMENTOS
         */
-
-        await db.collection('Division').coll.insertMany([
+       /*
+        await db.collection('Division').insertMany([
             { _id: 1, DIV_nom: 'Recursos humanos', DIV_ubi_fis: 'Edificio A' },
             { _id: 2, DIV_nom: 'Finanzas', DIV_ubi_fis: 'Edificio B' },
             { _id: 3, DIV_nom: 'Tecnología', DIV_ubi_fis: 'Edificio C' },
@@ -372,7 +367,6 @@ async function main() {
             { _id: 9, DIV_nom: 'Atención al cliente', DIV_ubi_fis: 'Edificio I' },
             { _id: 10, DIV_nom: 'Compras', DIV_ubi_fis: 'Edificio J' }
         ]);
-
         await db.collection('Sub_division').insertMany([
             { _id: 1, SDV_nom: 'Selección de personal', DIV_id: 1 },
             { _id: 2, SDV_nom: 'Capacitación y Desarrollo', DIV_id: 1 },
@@ -385,7 +379,6 @@ async function main() {
             { _id: 9, SDV_nom: 'Ventas internacionales', DIV_id: 5 },
             { _id: 10, SDV_nom: 'Ventas nacionales', DIV_id: 5 }
         ]);
-
         await db.collection('Cargo').insertMany([
             { _id: 1, CAR_desc: 'Gerente general' },
             { _id: 2, CAR_desc: 'Analista financiero' },
@@ -427,7 +420,7 @@ async function main() {
 
         await db.collection('AFP').insertMany([
             { _id: 1, AFP_desc: 'AFP Horizonte', AFP_apor_obl: 10.5, AFP_seg: 1.2, AFP_com: 0.3 },
-            { _id: 2, AFP_desc: 'AFP Integra', AFP_apor_obl: 11.0, AFP_seg: 1.1, AFP_com: 0.35 },
+            { _id: 2, AFP_desc: 'AFP Integra', AFP_apor_obl: Double(11.0), AFP_seg: 1.1, AFP_com: 0.35 },
             { _id: 3, AFP_desc: 'AFP Prima', AFP_apor_obl: 10.8, AFP_seg: 1.3, AFP_com: 0.32 },
             { _id: 4, AFP_desc: 'AFP Profuturo', AFP_apor_obl: 10.9, AFP_seg: 1.2, AFP_com: 0.33 },
             { _id: 5, AFP_desc: 'AFP Habitat', AFP_apor_obl: 11.2, AFP_seg: 1.4, AFP_com: 0.31 },
@@ -437,7 +430,7 @@ async function main() {
             { _id: 9, AFP_desc: 'AFP Vida', AFP_apor_obl: 11.3, AFP_seg: 1.2, AFP_com: 0.32 },
             { _id: 10, AFP_desc: 'AFP Seguro', AFP_apor_obl: 10.5, AFP_seg: 1.4, AFP_com: 0.3 }
         ]);
-
+        
         await db.collection('Condicion_Trabajo').insertMany([
             { _id: 1, CTB_desc: 'Tiempo Completo' },
             { _id: 2, CTB_desc: 'Medio Tiempo' },
@@ -460,31 +453,501 @@ async function main() {
             { _id: 9, PAR_desc: 'Primo' },
             { _id: 10, PAR_desc: 'Prima' }
         ]);
-
-        //faltan las cuentas bancarias 
+        */
+        
         await db.collection('Empleado').insertMany([
-            { _id: 1, CTB_id: 1, SDV_id: 6, EMP_nom: 'Juan', EMP_ape_p: 'Perez', EMP_ape_m: 'Lopez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345678' }, EMP_nac: new Date('1985-01-01'), EMP_sex: 'M', EMP_fec_nac: new Date('1985-01-01'), EMP_dir: 'Av. Siempre Viva 123', EMP_tel: '987654321', EMP_fec_ing: new Date('2010-01-01'), EMP_fec_ces: null, CAR_id: 7, AFP_id: 1, EMP_sld_bsc: 3000.00 },
-            { _id: 2, CTB_id: 2, SDV_id: 6, EMP_nom: 'Maria', EMP_ape_p: 'Gomez', EMP_ape_m: 'Martinez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345679' }, EMP_nac: new Date('1986-02-02'), EMP_sex: 'F', EMP_fec_nac: new Date('1986-02-02'), EMP_dir: 'Av. Siempre Viva 124', EMP_tel: '987654322', EMP_fec_ing: new Date('2011-02-01'), EMP_fec_ces: null, CAR_id: 7, AFP_id: 2, EMP_sld_bsc: 3200.00 },
-            { _id: 3, CTB_id: 1, SDV_id: 6, EMP_nom: 'Carlos', EMP_ape_p: 'Lopez', EMP_ape_m: 'Garcia', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345670' }, EMP_nac: new Date('1987-03-03'), EMP_sex: 'M', EMP_fec_nac: new Date('1987-03-03'), EMP_dir: 'Av. Siempre Viva 125', EMP_tel: '987654323', EMP_fec_ing: new Date('2012-03-01'), EMP_fec_ces: null, CAR_id: 7, AFP_id: 1, EMP_sld_bsc: 3400.00 },
-            { _id: 4, CTB_id: 2, SDV_id: 6, EMP_nom: 'Ana', EMP_ape_p: 'Martinez', EMP_ape_m: 'Rodriguez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345671' }, EMP_nac: new Date('1988-04-04'), EMP_sex: 'F', EMP_fec_nac: new Date('1988-04-04'), EMP_dir: 'Av. Siempre Viva 126', EMP_tel: '987654324', EMP_fec_ing: new Date('2013-04-01'), EMP_fec_ces: null, CAR_id: 7, AFP_id: 2, EMP_sld_bsc: 3600.00 },
-            { _id: 5, CTB_id: 1, SDV_id: 6, EMP_nom: 'Luis', EMP_ape_p: 'Garcia', EMP_ape_m: 'Hernandez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345672' }, EMP_nac: new Date('1989-05-05'), EMP_sex: 'M', EMP_fec_nac: new Date('1989-05-05'), EMP_dir: 'Av. Siempre Viva 127', EMP_tel: '987654325', EMP_fec_ing: new Date('2014-05-01'), EMP_fec_ces: null, CAR_id: 7, AFP_id: 1, EMP_sld_bsc: 3800.00 },
-            { _id: 6, CTB_id: 2, SDV_id: 6, EMP_nom: 'Elena', EMP_ape_p: 'Rodriguez', EMP_ape_m: 'Lopez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345673' }, EMP_nac: new Date('1990-06-06'), EMP_sex: 'F', EMP_fec_nac: new Date('1990-06-06'), EMP_dir: 'Av. Siempre Viva 128', EMP_tel: '987654326', EMP_fec_ing: new Date('2015-06-01'), EMP_fec_ces: new Date('2020-05-01'), CAR_id: 7, AFP_id: 2, EMP_sld_bsc: 4000.00 },
-            { _id: 7, CTB_id: 1, SDV_id: 6, EMP_nom: 'Miguel', EMP_ape_p: 'Hernandez', EMP_ape_m: 'Martinez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345674' }, EMP_nac: new Date('1991-07-07'), EMP_sex: 'M', EMP_fec_nac: new Date('1991-07-07'), EMP_dir: 'Av. Siempre Viva 129', EMP_tel: '987654327', EMP_fec_ing: new Date('2016-07-01'), EMP_fec_ces: new Date('2020-08-01'), CAR_id: 7, AFP_id: 1, EMP_sld_bsc: 4200.00 },
-            { _id: 8, CTB_id: 2, SDV_id: 6, EMP_nom: 'Laura', EMP_ape_p: 'Fernandez', EMP_ape_m: 'Garcia', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345675' }, EMP_nac: new Date('1992-08-08'), EMP_sex: 'F', EMP_fec_nac: new Date('1992-08-08'), EMP_dir: 'Av. Siempre Viva 130', EMP_tel: '987654328', EMP_fec_ing: new Date('2017-08-01'), EMP_fec_ces: null, CAR_id: 4, AFP_id: 2, EMP_sld_bsc: 4400.00 },
-            { _id: 9, CTB_id: 1, SDV_id: 5, EMP_nom: 'Jose', EMP_ape_p: 'Sanchez', EMP_ape_m: 'Rodriguez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345676' }, EMP_nac: new Date('1993-09-09'), EMP_sex: 'M', EMP_fec_nac: new Date('1993-09-09'), EMP_dir: 'Av. Siempre Viva 131', EMP_tel: '987654329', EMP_fec_ing: new Date('2018-09-01'), EMP_fec_ces: null, CAR_id: 10, AFP_id: 1, EMP_sld_bsc: 4600.00 },
-            { _id: 10, CTB_id: 2, SDV_id: 3, EMP_nom: 'Lucia', EMP_ape_p: 'Ramirez', EMP_ape_m: 'Hernandez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345677' }, EMP_nac: new Date('1994-10-10'), EMP_sex: 'F', EMP_fec_nac: new Date('1994-10-10'), EMP_dir: 'Av. Siempre Viva 132', EMP_tel: '987654330', EMP_fec_ing: new Date('2019-10-01'), EMP_fec_ces: null, CAR_id: 1, AFP_id: 2, EMP_sld_bsc: 4800.00 },
-            { _id: 11, CTB_id: 1, SDV_id: 7, EMP_nom: 'Pedro', EMP_ape_p: 'Torres', EMP_ape_m: 'Lopez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345611' }, EMP_nac: new Date('1995-11-11'), EMP_sex: 'M', EMP_fec_nac: new Date('1995-11-11'), EMP_dir: 'Av. Siempre Viva 133', EMP_tel: '987654331', EMP_fec_ing: new Date('2020-11-01'), EMP_fec_ces: null, CAR_id: 5, AFP_id: 1, EMP_sld_bsc: 5000.00 },
-            { _id: 12, CTB_id: 1, SDV_id: 7, EMP_nom: 'Sofia', EMP_ape_p: 'Flores', EMP_ape_m: 'Martinez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345622' }, EMP_nac: new Date('1996-12-12'), EMP_sex: 'F', EMP_fec_nac: new Date('1996-12-12'), EMP_dir: 'Av. Siempre Viva 134', EMP_tel: '987654332', EMP_fec_ing: new Date('2021-12-01'), EMP_fec_ces: null, CAR_id: 6, AFP_id: 2, EMP_sld_bsc: 5200.00 },
-            { _id: 13, CTB_id: 1, SDV_id: 10, EMP_nom: 'Diego', EMP_ape_p: 'Rivera', EMP_ape_m: 'Garcia', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345633' }, EMP_nac: new Date('1997-01-13'), EMP_sex: 'M', EMP_fec_nac: new Date('1997-01-13'), EMP_dir: 'Av. Siempre Viva 135', EMP_tel: '987654333', EMP_fec_ing: new Date('2022-01-01'), EMP_fec_ces: null, CAR_id: 3, AFP_id: 1, EMP_sld_bsc: 5400.00 },
-            { _id: 14, CTB_id: 1, SDV_id: 9, EMP_nom: 'Marta', EMP_ape_p: 'Jimenez', EMP_ape_m: 'Rodriguez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345644' }, EMP_nac: new Date('1998-02-14'), EMP_sex: 'F', EMP_fec_nac: new Date('1998-02-14'), EMP_dir: 'Av. Siempre Viva 136', EMP_tel: '987654334', EMP_fec_ing: new Date('2023-02-01'), EMP_fec_ces: null, CAR_id: 3, AFP_id: 2, EMP_sld_bsc: 5600.00 },
-            { _id: 15, CTB_id: 1, SDV_id: 8, EMP_nom: 'Jorge Raúl', EMP_ape_p: 'Ruiz', EMP_ape_m: 'Hernandez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345655' }, EMP_nac: new Date('1999-03-15'), EMP_sex: 'M', EMP_fec_nac: new Date('1999-03-15'), EMP_dir: 'Av. Siempre Viva 137', EMP_tel: '987654335', EMP_fec_ing: new Date('2024-03-01'), EMP_fec_ces: null, CAR_id: 3, AFP_id: 1, EMP_sld_bsc: 5800.00 },
-            { _id: 16, CTB_id: 2, SDV_id: 3, EMP_nom: 'Carmen', EMP_ape_p: 'Ortiz', EMP_ape_m: 'Lopez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345666' }, EMP_nac: new Date('2000-04-16'), EMP_sex: 'F', EMP_fec_nac: new Date('2000-04-16'), EMP_dir: 'Av. Siempre Viva 138', EMP_tel: '987654336', EMP_fec_ing: new Date('2025-04-01'), EMP_fec_ces: null, CAR_id: 2, AFP_id: 2, EMP_sld_bsc: 6000.00 },
-            { _id: 17, CTB_id: 1, SDV_id: 7, EMP_nom: 'Raul', EMP_ape_p: 'Morales', EMP_ape_m: 'Martinez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345677' }, EMP_nac: new Date('2001-05-17'), EMP_sex: 'M', EMP_fec_nac: new Date('2001-05-17'), EMP_dir: 'Av. Siempre Viva 139', EMP_tel: '987654337', EMP_fec_ing: new Date('2026-05-01'), EMP_fec_ces: null, CAR_id: 5, AFP_id: 1, EMP_sld_bsc: 6200.00 },
-            { _id: 18, CTB_id: 2, SDV_id: 8, EMP_nom: 'Isabel', EMP_ape_p: 'Gutierrez', EMP_ape_m: 'Garcia', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345688' }, EMP_nac: new Date('2002-06-18'), EMP_sex: 'F', EMP_fec_nac: new Date('2002-06-18'), EMP_dir: 'Av. Siempre Viva 140', EMP_tel: '987654338', EMP_fec_ing: new Date('2027-06-01'), EMP_fec_ces: null, CAR_id: 1, AFP_id: 2, EMP_sld_bsc: 6400.00 },
-            { _id: 19, CTB_id: 1, SDV_id: 9, EMP_nom: 'Alberto', EMP_ape_p: 'Navarro', EMP_ape_m: 'Rodriguez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345699' }, EMP_nac: new Date('2003-07-19'), EMP_sex: 'M', EMP_fec_nac: new Date('2003-07-19'), EMP_dir: 'Av. Siempre Viva 141', EMP_tel: '987654339', EMP_fec_ing: new Date('2028-07-01'), EMP_fec_ces: null, CAR_id: 8, AFP_id: 1, EMP_sld_bsc: 6600.00 },
-            { _id: 20, CTB_id: 2, SDV_id: 10, EMP_nom: 'Patricia', EMP_ape_p: 'Dominguez', EMP_ape_m: 'Hernandez', EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345111' }, EMP_nac: new Date('2004-08-20'), EMP_sex: 'F', EMP_fec_nac: new Date('2004-08-20'), EMP_dir: 'Av. Siempre Viva 142', EMP_tel: '987654340', EMP_fec_ing: new Date('2029-08-01'), EMP_fec_ces: null, CAR_id: 8, AFP_id: 2, EMP_sld_bsc: 6800.00 }
+            { 
+            _id: 1, 
+            CTB_id: 1, 
+            SDV_id: 6, 
+            EMP_cta: [
+                { EMP_banc: 1, EMP_num: '1234567890', EMP_es_CTS: false },
+                { EMP_banc: 2, EMP_num: '2345678901', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Juan', 
+            EMP_ape_p: 'Perez', 
+            EMP_ape_m: 'Lopez', 
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345678' }, 
+            EMP_fam: [
+                { FAM_id: 1 }
+            ],
+            EMP_nac: new Date('1985-01-01'), 
+            EMP_sex: 'M', 
+            EMP_fec_nac: new Date('1985-01-01'), 
+            EMP_dir: 'Av. Siempre Viva 123', 
+            EMP_tel: '987654321', 
+            EMP_fec_ing: new Date('2010-01-01'), 
+            EMP_fec_ces: null, 
+            CAR_id: 7, 
+            AFP_id: 1, 
+            EMP_sld_bsc: new Double(3000.00),
+            },
+            {
+            _id: 2,
+            CTB_id: 2,
+            SDV_id: 6,
+            EMP_cta: [
+                { EMP_banc: 3, EMP_num: '3456789012', EMP_es_CTS: false },
+                { EMP_banc: 4, EMP_num: '4567890123', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Maria',
+            EMP_ape_p: 'Gomez',
+            EMP_ape_m: 'Martinez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345679' },
+            EMP_fam: [
+                { FAM_id: 2 }
+            ],
+            EMP_nac: new Date('1986-02-02'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('1986-02-02'),
+            EMP_dir: 'Av. Siempre Viva 124',
+            EMP_tel: '987654322',
+            EMP_fec_ing: new Date('2011-02-01'),
+            EMP_fec_ces: null,
+            CAR_id: 7,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(3200.00),
+            },
+            {
+            _id: 3,
+            CTB_id: 1,
+            SDV_id: 6,
+            EMP_cta: [
+                { EMP_banc: 5, EMP_num: '5678901234', EMP_es_CTS: false },
+                { EMP_banc: 6, EMP_num: '6789012345', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Carlos',
+            EMP_ape_p: 'Lopez',
+            EMP_ape_m: 'Garcia',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345670' },
+            EMP_fam: [
+                { FAM_id: 3 }
+            ],
+            EMP_nac: new Date('1987-03-03'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('1987-03-03'),
+            EMP_dir: 'Av. Siempre Viva 125',
+            EMP_tel: '987654323',
+            EMP_fec_ing: new Date('2012-03-01'),
+            EMP_fec_ces: null,
+            CAR_id: 7,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(3400.00),
+            },
+            {
+            _id: 4,
+            CTB_id: 2,
+            SDV_id: 6,
+            EMP_cta: [
+                { EMP_banc: 7, EMP_num: '7890123456', EMP_es_CTS: false },
+                { EMP_banc: 8, EMP_num: '8901234567', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Ana',
+            EMP_ape_p: 'Martinez',
+            EMP_ape_m: 'Rodriguez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345671' },
+            EMP_fam: [
+                { FAM_id: 4 }
+            ],
+            EMP_nac: new Date('1988-04-04'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('1988-04-04'),
+            EMP_dir: 'Av. Siempre Viva 126',
+            EMP_tel: '987654324',
+            EMP_fec_ing: new Date('2013-04-01'),
+            EMP_fec_ces: null,
+            CAR_id: 7,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(3600.00),
+            },
+            {
+            _id: 5,
+            CTB_id: 1,
+            SDV_id: 6,
+            EMP_cta: [
+                { EMP_banc: 9, EMP_num: '9012345678', EMP_es_CTS: false },
+                { EMP_banc: 10, EMP_num: '0123456789', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Luis',
+            EMP_ape_p: 'Garcia',
+            EMP_ape_m: 'Hernandez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345672' },
+            EMP_fam: [
+                { FAM_id: 5 }
+            ],
+            EMP_nac: new Date('1989-05-05'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('1989-05-05'),
+            EMP_dir: 'Av. Siempre Viva 127',
+            EMP_tel: '987654325',
+            EMP_fec_ing: new Date('2014-05-01'),
+            EMP_fec_ces: null,
+            CAR_id: 7,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(3800.00),
+            },
+            {
+            _id: 6,
+            CTB_id: 2,
+            SDV_id: 6,
+            EMP_cta: [
+                { EMP_banc: 1, EMP_num: '0987654321', EMP_es_CTS: true },
+                { EMP_banc: 2, EMP_num: '1098765432', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Elena',
+            EMP_ape_p: 'Rodriguez',
+            EMP_ape_m: 'Lopez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345673' },
+            EMP_fam: [
+                { FAM_id: 6 }
+            ],
+            EMP_nac: new Date('1990-06-06'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('1990-06-06'),
+            EMP_dir: 'Av. Siempre Viva 128',
+            EMP_tel: '987654326',
+            EMP_fec_ing: new Date('2015-06-01'),
+            EMP_fec_ces: new Date('2020-05-01'),
+            CAR_id: 7,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(4000.00),
+            },
+            {
+            _id: 7,
+            CTB_id: 1,
+            SDV_id: 6,
+            EMP_cta: [
+                { EMP_banc: 3, EMP_num: '2109876543', EMP_es_CTS: true },
+                { EMP_banc: 4, EMP_num: '3210987654', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Miguel',
+            EMP_ape_p: 'Hernandez',
+            EMP_ape_m: 'Martinez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345674' },
+            EMP_fam: [
+                { FAM_id: 7 }
+            ],
+            EMP_nac: new Date('1991-07-07'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('1991-07-07'),
+            EMP_dir: 'Av. Siempre Viva 129',
+            EMP_tel: '987654327',
+            EMP_fec_ing: new Date('2016-07-01'),
+            EMP_fec_ces: new Date('2020-08-01'),
+            CAR_id: 7,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(4200.00),
+            },
+            {
+            _id: 8,
+            CTB_id: 2,
+            SDV_id: 6,
+            EMP_cta: [
+                { EMP_banc: 5, EMP_num: '4321098765', EMP_es_CTS: true },
+                { EMP_banc: 6, EMP_num: '5432109876', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Laura',
+            EMP_ape_p: 'Fernandez',
+            EMP_ape_m: 'Garcia',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345675' },
+            EMP_fam: [
+                { FAM_id: 8 }
+            ],
+            EMP_nac: new Date('1992-08-08'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('1992-08-08'),
+            EMP_dir: 'Av. Siempre Viva 130',
+            EMP_tel: '987654328',
+            EMP_fec_ing: new Date('2017-08-01'),
+            EMP_fec_ces: null,
+            CAR_id: 4,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(4400.00),
+            },
+            {
+            _id: 9,
+            CTB_id: 1,
+            SDV_id: 5,
+            EMP_cta: [
+                { EMP_banc: 7, EMP_num: '6543210987', EMP_es_CTS: true },
+                { EMP_banc: 8, EMP_num: '7654321098', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Jose',
+            EMP_ape_p: 'Sanchez',
+            EMP_ape_m: 'Rodriguez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345676' },
+            EMP_fam: [
+                { FAM_id: 9 }
+            ],
+            EMP_nac: new Date('1993-09-09'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('1993-09-09'),
+            EMP_dir: 'Av. Siempre Viva 131',
+            EMP_tel: '987654329',
+            EMP_fec_ing: new Date('2018-09-01'),
+            EMP_fec_ces: null,
+            CAR_id: 10,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(4600.00),
+            },
+            {
+            _id: 10,
+            CTB_id: 2,
+            SDV_id: 3,
+            EMP_cta: [
+                { EMP_banc: 9, EMP_num: '8765432109', EMP_es_CTS: true },
+                { EMP_banc: 10, EMP_num: '9876543210', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Lucia',
+            EMP_ape_p: 'Ramirez',
+            EMP_ape_m: 'Hernandez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345677' },
+            EMP_fam: [
+                { FAM_id: 10 }
+            ],
+            EMP_nac: new Date('1994-10-10'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('1994-10-10'),
+            EMP_dir: 'Av. Siempre Viva 132',
+            EMP_tel: '987654330',
+            EMP_fec_ing: new Date('2019-10-01'),
+            EMP_fec_ces: null,
+            CAR_id: 1,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(4800.00),
+            },
+            {
+            _id: 11,
+            CTB_id: 1,
+            SDV_id: 7,
+            EMP_cta: [
+                { EMP_banc: 1, EMP_num: '12345677', EMP_es_CTS: true },
+                { EMP_banc: 2, EMP_num: '12345611', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Pedro',
+            EMP_ape_p: 'Torres',
+            EMP_ape_m: 'Lopez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345611' },
+            EMP_nac: new Date('1995-11-11'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('1995-11-11'),
+            EMP_dir: 'Av. Siempre Viva 133',
+            EMP_tel: '987654331',
+            EMP_fec_ing: new Date('2020-11-01'),
+            EMP_fec_ces: null,
+            CAR_id: 5,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(5000.00),
+            },
+            {
+            _id: 12,
+            CTB_id: 1,
+            SDV_id: 7,
+            EMP_cta: [
+                { EMP_banc: 3, EMP_num: '12345622', EMP_es_CTS: false },
+                { EMP_banc: 4, EMP_num: '12345633', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Sofia',
+            EMP_ape_p: 'Flores',
+            EMP_ape_m: 'Martinez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345622' },
+            EMP_nac: new Date('1996-12-12'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('1996-12-12'),
+            EMP_dir: 'Av. Siempre Viva 134',
+            EMP_tel: '987654332',
+            EMP_fec_ing: new Date('2021-12-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 2,
+            EMP_sld_bsc: 5200.00,
+            },
+            {
+            _id: 13,
+            CTB_id: 1,
+            SDV_id: 10,
+            EMP_cta: [
+                { EMP_banc: 5, EMP_num: '12345633', EMP_es_CTS: false },
+                { EMP_banc: 6, EMP_num: '12345644', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Diego',
+            EMP_ape_p: 'Rivera',
+            EMP_ape_m: 'Garcia',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345633' },
+            EMP_nac: new Date('1997-01-13'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('1997-01-13'),
+            EMP_dir: 'Av. Siempre Viva 135',
+            EMP_tel: '987654333',
+            EMP_fec_ing: new Date('2022-01-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(5400.00),
+            },
+            {
+            _id: 14,
+            CTB_id: 1,
+            SDV_id: 9,
+            EMP_cta: [
+                { EMP_banc: 7, EMP_num: '12345644', EMP_es_CTS: false },
+                { EMP_banc: 8, EMP_num: '23456789', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Marta',
+            EMP_ape_p: 'Jimenez',
+            EMP_ape_m: 'Rodriguez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345644' },
+            EMP_nac: new Date('1998-02-14'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('1998-02-14'),
+            EMP_dir: 'Av. Siempre Viva 136',
+            EMP_tel: '987654334',
+            EMP_fec_ing: new Date('2023-02-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(5600.00),
+            },
+            {
+            _id: 15,
+            CTB_id: 1,
+            SDV_id: 8,
+            EMP_cta: [
+                { EMP_banc: 9, EMP_num: '12345655', EMP_es_CTS: false },
+                { EMP_banc: 10, EMP_num: '23456789', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Jorge Raúl',
+            EMP_ape_p: 'Ruiz',
+            EMP_ape_m: 'Hernandez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345655' },
+            EMP_nac: new Date('1999-03-15'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('1999-03-15'),
+            EMP_dir: 'Av. Siempre Viva 137',
+            EMP_tel: '987654335',
+            EMP_fec_ing: new Date('2024-03-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(5800.00),
+            },
+            {
+            _id: 16,
+            CTB_id: 2,
+            SDV_id: 8,
+            EMP_cta: [
+                { EMP_banc: 1, EMP_num: '12345666', EMP_es_CTS: true },
+                { EMP_banc: 2, EMP_num: '23456789', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Carmen',
+            EMP_ape_p: 'Ortiz',
+            EMP_ape_m: 'Lopez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345666' },
+            EMP_nac: new Date('2000-04-16'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('2000-04-16'),
+            EMP_dir: 'Av. Siempre Viva 138',
+            EMP_tel: '987654336',
+            EMP_fec_ing: new Date('2025-04-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(6000.00),
+            },
+            {
+            _id: 17,
+            CTB_id: 1,
+            SDV_id: 9,
+            EMP_cta: [
+                { EMP_banc: 3, EMP_num: '12345677', EMP_es_CTS: false },
+                { EMP_banc: 4, EMP_num: '23456789', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Raul',
+            EMP_ape_p: 'Morales',
+            EMP_ape_m: 'Martinez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345677' },
+            EMP_nac: new Date('2001-05-17'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('2001-05-17'),
+            EMP_dir: 'Av. Siempre Viva 139',
+            EMP_tel: '987654337',
+            EMP_fec_ing: new Date('2026-05-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(6200.00),
+            },
+            {
+            _id: 18,
+            CTB_id: 2,
+            SDV_id: 9,
+            EMP_cta: [
+                { EMP_banc: 5, EMP_num: '12345688', EMP_es_CTS: true },
+                { EMP_banc: 6, EMP_num: '23456789', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Isabel',
+            EMP_ape_p: 'Gutierrez',
+            EMP_ape_m: 'Garcia',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345688' },
+            EMP_nac: new Date('2002-06-18'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('2002-06-18'),
+            EMP_dir: 'Av. Siempre Viva 140',
+            EMP_tel: '987654338',
+            EMP_fec_ing: new Date('2027-06-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(6400.00),
+            },
+            {
+            _id: 19,
+            CTB_id: 1,
+            SDV_id: 10,
+            EMP_cta: [
+                { EMP_banc: 7, EMP_num: '12345699', EMP_es_CTS: false },
+                { EMP_banc: 8, EMP_num: '23456789', EMP_es_CTS: true }
+            ],
+            EMP_nom: 'Alberto',
+            EMP_ape_p: 'Navarro',
+            EMP_ape_m: 'Rodriguez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345699' },
+            EMP_nac: new Date('2003-07-19'),
+            EMP_sex: 'M',
+            EMP_fec_nac: new Date('2003-07-19'),
+            EMP_dir: 'Av. Siempre Viva 141',
+            EMP_tel: '987654339',
+            EMP_fec_ing: new Date('2028-07-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 1,
+            EMP_sld_bsc: new Double(6600.00),
+            },
+            {
+            _id: 20,
+            CTB_id: 2,
+            SDV_id: 10,
+            EMP_cta: [
+                { EMP_banc: 9, EMP_num: '12345600', EMP_es_CTS: true },
+                { EMP_banc: 10, EMP_num: '23456789', EMP_es_CTS: false }
+            ],
+            EMP_nom: 'Patricia',
+            EMP_ape_p: 'Dominguez',
+            EMP_ape_m: 'Hernandez',
+            EMP_ident: { EMP_tipo: 'DNI', EMP_num: '12345600' },
+            EMP_nac: new Date('2004-08-20'),
+            EMP_sex: 'F',
+            EMP_fec_nac: new Date('2004-08-20'),
+            EMP_dir: 'Av. Siempre Viva 142',
+            EMP_tel: '987654340',
+            EMP_fec_ing: new Date('2029-08-01'),
+            EMP_fec_ces: null,
+            CAR_id: 6,
+            AFP_id: 2,
+            EMP_sld_bsc: new Double(6800.00),
+            }
         ]);
-
+        
         await db.collection('Beneficios').insertMany([
             { _id: 1, EMP_id: 1, TBE_id: 1, BEN_fec: new Date('2023-01-15'), BEN_mon: 500.00 },
             { _id: 2, EMP_id: 2, TBE_id: 2, BEN_fec: new Date('2023-02-20'), BEN_mon: 1000.00 },
@@ -509,19 +972,6 @@ async function main() {
             { _id: 8, PAR_id: 8, FAM_ident: { FAM_tipo: 'DNI', FAM_num: '33445566' }, FAM_nom: 'Ana', FAM_ape_p: 'Ramirez', FAM_ape_m: 'Lopez', FAM_fec_nac: new Date('1978-11-18'), FAM_fec_fall: null, FAM_sex: 'F' },
             { _id: 9, PAR_id: 9, FAM_ident: { FAM_tipo: 'DNI', FAM_num: '44556677' }, FAM_nom: 'Luis', FAM_ape_p: 'Lopez', FAM_ape_m: 'Ramirez', FAM_fec_nac: new Date('1985-06-05'), FAM_fec_fall: null, FAM_sex: 'M' },
             { _id: 10, PAR_id: 10, FAM_ident: { FAM_tipo: 'DNI', FAM_num: '55667788' }, FAM_nom: 'Sofia', FAM_ape_p: 'Lopez', FAM_ape_m: 'Ramirez', FAM_fec_nac: new Date('1987-09-25'), FAM_fec_fall: null, FAM_sex: 'F' }
-        ]);
-
-        await db.collection('FAM_EMP').insertMany([
-            { _id: 1, FAM_id: 1, EMP_id: 1 },
-            { _id: 2, FAM_id: 2, EMP_id: 2 },
-            { _id: 3, FAM_id: 3, EMP_id: 3 },
-            { _id: 4, FAM_id: 4, EMP_id: 4 },
-            { _id: 5, FAM_id: 5, EMP_id: 5 },
-            { _id: 6, FAM_id: 6, EMP_id: 6 },
-            { _id: 7, FAM_id: 7, EMP_id: 7 },
-            { _id: 8, FAM_id: 8, EMP_id: 8 },
-            { _id: 9, FAM_id: 9, EMP_id: 9 },
-            { _id: 10, FAM_id: 10, EMP_id: 10 }
         ]);
 
         await db.collection('Licencia').insertMany([
@@ -674,6 +1124,9 @@ async function main() {
             { _id: 19, EMP_id: 19, CTR_tip_con: 'Indefinido', CTR_fec_ini: new Date('2024-06-01'), CTR_fec_fin: new Date('2025-06-01'), CTR_sld_bsc: 3400.00, CTR_per_prueb: 3, CTR_mot_ter: null },
             { _id: 20, EMP_id: 20, CTR_tip_con: 'Temporal', CTR_fec_ini: new Date('2024-07-01'), CTR_fec_fin: new Date('2024-12-31'), CTR_sld_bsc: 3100.00, CTR_per_prueb: 2, CTR_mot_ter: null }
         ]);
+        /*
+        FIN DE LA CREACIÓN DE DOCUMENTOS
+        */
 
     } catch (error) {
         console.error('An error occurred:', error);
