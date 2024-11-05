@@ -4,9 +4,9 @@
   "settings": {
     "width": 4000,
     "height": 4000,
-    "scrollTop": -827.4535,
-    "scrollLeft": -1979.6056,
-    "zoomLevel": 0.82,
+    "scrollTop": -1916.0327,
+    "scrollLeft": -2387.921,
+    "zoomLevel": 0.76,
     "show": 431,
     "database": 2,
     "databaseName": "RRHH",
@@ -3935,7 +3935,7 @@
       "KTwL6RYxR9AW5-bbJdDFd": {
         "id": "KTwL6RYxR9AW5-bbJdDFd",
         "identification": false,
-        "relationshipType": 8,
+        "relationshipType": 16,
         "startRelationshipType": 2,
         "start": {
           "tableId": "mokIi8vsdQP0rJO1ON1yC",
@@ -3956,7 +3956,7 @@
           "direction": 4
         },
         "meta": {
-          "updateAt": 1727150738801,
+          "updateAt": 1730829046070,
           "createAt": 1727150738801
         }
       },
@@ -4215,7 +4215,7 @@
       "yAUCkduv2nV4PD8hIROag": {
         "id": "yAUCkduv2nV4PD8hIROag",
         "identification": false,
-        "relationshipType": 8,
+        "relationshipType": 16,
         "startRelationshipType": 2,
         "start": {
           "tableId": "EscDal14nf01w7ARwaeqX",
@@ -4236,14 +4236,14 @@
           "direction": 8
         },
         "meta": {
-          "updateAt": 1727237070175,
+          "updateAt": 1730829034037,
           "createAt": 1727237070175
         }
       },
       "DQBrhc3OfxSs8zn5Rq57k": {
         "id": "DQBrhc3OfxSs8zn5Rq57k",
         "identification": false,
-        "relationshipType": 8,
+        "relationshipType": 16,
         "startRelationshipType": 2,
         "start": {
           "tableId": "rmYV_P7CD5YHt2Atfuqt0",
@@ -4264,7 +4264,7 @@
           "direction": 1
         },
         "meta": {
-          "updateAt": 1727237330433,
+          "updateAt": 1730829053532,
           "createAt": 1727237330433
         }
       },
@@ -5356,7 +5356,9 @@
       "relationshipEntities",
       1727150738796,
       -1,
-      {}
+      {
+        "relationshipType": 1730829046069
+      }
     ],
     "YVbUxLExzImWFfwtC1EOx": [
       "tableColumnEntities",
@@ -5849,7 +5851,9 @@
       "relationshipEntities",
       1727237070174,
       -1,
-      {}
+      {
+        "relationshipType": 1730829034035
+      }
     ],
     "rmYV_P7CD5YHt2Atfuqt0": [
       "tableEntities",
@@ -5896,7 +5900,9 @@
       "relationshipEntities",
       1727237330431,
       -1,
-      {}
+      {
+        "relationshipType": 1730829053531
+      }
     ],
     "O--ozLniQ5XNl84IHvX8E": [
       "tableColumnEntities",
