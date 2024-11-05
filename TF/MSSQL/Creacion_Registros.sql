@@ -38,28 +38,28 @@ VALUES
 (10, 'Abogado Corporativo');
 
 INSERT INTO Tipo_Beneficio (TBE_cod, TBE_desc) VALUES 
-(001, 'Seguro de vida'),
-(002, 'Bono por desempeño'),
-(003, 'Bono por trabajo en zonas remotas'),
-(004, 'Plan de pension'),
-(005, 'Bono por riesgo'),
-(006, 'Bono por objetivo de sostenibilidad'),
-(007, 'Bonos de productividad global'),
-(008, 'Bonos por impacto social'),
-(009, 'Bonos por antigüedad'),
-(010, 'Bonos por eficiencia operativa');
+(1, 'Seguro de vida'),
+(2, 'Bono por desempeño'),
+(3, 'Bono por trabajo en zonas remotas'),
+(4, 'Plan de pension'),
+(5, 'Bono por riesgo'),
+(6, 'Bono por objetivo de sostenibilidad'),
+(7, 'Bonos de productividad global'),
+(8, 'Bonos por impacto social'),
+(9, 'Bonos por antigüedad'),
+(10, 'Bonos por eficiencia operativa');
 
 INSERT INTO Tipo_Licencia (TLI_cod, TLI_desc, TLI_rem) VALUES 
-(001, 'Licencia por asistencia medica', 1),
-(002, 'Licencia por maternidad', 1),
-(003, 'Licencia por enfermedad grave o terminal', 1),
-(004, 'Licencia por fallecimiento de familiares', 0),
-(005, 'Licencia por paternidad', 1),
-(006, 'Licencia por asistencia médica a un familiar', 0),
-(007, 'Licencia sindical', 1),
-(008, 'Licencia por ser bombero voluntario', 0),
-(009, 'Licencia por adopción', 1),
-(010, 'Licencia por lactancia', 0);
+(1, 'Licencia por asistencia medica', 1),
+(2, 'Licencia por maternidad', 1),
+(3, 'Licencia por enfermedad grave o terminal', 1),
+(4, 'Licencia por fallecimiento de familiares', 0),
+(5, 'Licencia por paternidad', 1),
+(6, 'Licencia por asistencia médica a un familiar', 0),
+(7, 'Licencia sindical', 1),
+(8, 'Licencia por ser bombero voluntario', 0),
+(9, 'Licencia por adopción', 1),
+(10, 'Licencia por lactancia', 0);
 
 INSERT INTO Banco (BAN_cod, BAN_desc) VALUES
 (1, 'Banco Nacional'),
@@ -138,16 +138,16 @@ INSERT INTO Empleado (EMP_cod, CTB_cod, SDV_cod, EMP_nom, EMP_ape_p, EMP_ape_m, 
 (20, 2, 10, 'Patricia', 'Dominguez', 'Hernandez', 1, '12345111', 'Peru', 'F', '2004-08-20', 'Av. Siempre Viva 142', '987654340', '2029-08-01', NULL, 8, 2, 'CUSPP020', 6800.00);
 
 INSERT INTO Beneficios (BEN_cod, EMP_cod,TBE_cod, BEN_fec, BEN_mon) VALUES
-(1, 1, 001, '2023-01-15', 500.00),
-(2, 2, 002, '2023-02-20', 1000.00),
-(3, 3, 003, '2023-03-10', 200.00),
-(4, 4, 004, '2023-04-25', 300.00),
-(5, 5, 005, '2023-05-12', 150.00),
-(6, 6, 006, '2023-06-01', 250.00),
-(7, 7, 007, '2023-07-05', 1200.00),
-(8, 8, 008, '2023-08-14', 800.00),
-(9, 9, 009, '2023-09-23', 400.00),
-(10, 10, 010, '2023-10-30', 700.00)
+(1, 1, 1, '2023-01-15', 500.00),
+(2, 2, 2, '2023-02-20', 1000.00),
+(3, 3, 3, '2023-03-10', 200.00),
+(4, 4, 4, '2023-04-25', 300.00),
+(5, 5, 5, '2023-05-12', 150.00),
+(6, 6, 6, '2023-06-01', 250.00),
+(7, 7, 7, '2023-07-05', 1200.00),
+(8, 8, 8, '2023-08-14', 800.00),
+(9, 9, 9, '2023-09-23', 400.00),
+(10, 10, 10, '2023-10-30', 700.00)
 
 INSERT INTO Familiar (FAM_cod, PAR_cod, TID_cod, FAM_num_iden, FAM_nom, FAM_ape_p, FAM_ape_m, FAM_fec_nac, FAM_fec_fall, FAM_sex) VALUES
 (1, 1, 1, '81234567', 'Carlos', 'Perez', 'Ramirez', '1960-01-01', NULL, 'M'),
