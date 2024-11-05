@@ -105,7 +105,7 @@ CREATE TABLE Cuenta_Bancaria
   CBC_cod     int NOT NULL,
   EMP_cod     int NOT NULL,
   BAN_cod     int NOT NULL,
-  CBC_num_cta int NOT NULL,
+  CBC_num_cta varchar(20) NOT NULL,
   CBC_CTS     bit NOT NULL,
   CONSTRAINT PK_Cuenta_Bancaria PRIMARY KEY (CBC_cod)
 )

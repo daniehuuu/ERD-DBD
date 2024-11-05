@@ -4,9 +4,9 @@
   "settings": {
     "width": 4000,
     "height": 4000,
-    "scrollTop": -1916.0327,
-    "scrollLeft": -2387.921,
-    "zoomLevel": 0.76,
+    "scrollTop": -1437.3994,
+    "scrollLeft": -1533.8036,
+    "zoomLevel": 0.73,
     "show": 431,
     "database": 2,
     "databaseName": "RRHH",
@@ -3223,18 +3223,18 @@
         "tableId": "u1pluM75cqpbGQOao-jI9",
         "name": "CBC_num_cta",
         "comment": "",
-        "dataType": "int",
+        "dataType": "varchar(20)",
         "default": "",
         "options": 8,
         "ui": {
           "keys": 0,
           "widthName": 73,
           "widthComment": 60,
-          "widthDataType": 60,
+          "widthDataType": 61,
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1727235978089,
+          "updateAt": 1730837551433,
           "createAt": 1727235945979
         }
       },
@@ -4147,7 +4147,7 @@
           "columnIds": [
             "hrg9oWlYCZ61IeIluWG_k"
           ],
-          "x": 2111.6039052924775,
+          "x": 2112.1039052924775,
           "y": 1589.901123183652,
           "direction": 8
         },
@@ -4175,7 +4175,7 @@
           "columnIds": [
             "9xfvFEunYeEQelXiMgFrZ"
           ],
-          "x": 2300.6039052924775,
+          "x": 2301.6039052924775,
           "y": 1501.901123183652,
           "direction": 2
         },
@@ -5739,7 +5739,7 @@
       {
         "name": 1727235955698,
         "options(notNull)": 1727235976308,
-        "dataType": 1727235978089
+        "dataType": 1730837551432
       }
     ],
     "jO4ROEE5zU7Akv3bKP_Eu": [
