@@ -22,3 +22,8 @@ db.AFP.insertMany([
             { _id: 9, AFP_desc: 'AFP Vida', AFP_apor_obl: 11.3, AFP_seg: 1.2, AFP_com: 0.32 },
             { _id: 10, AFP_desc: 'AFP Seguro', AFP_apor_obl: 10.5, AFP_seg: 1.4, AFP_com: 0.3 }
         ]);
+
+db.Asistencia.insertMany([
+            { _id: 1, EMP_id: 1, AST_fec_ent: new Date('2024-10-04'), AST_hora_ent: new Date('2024-10-04T08:00:00Z'), AST_fec_sal: new Date('2024-10-04'), AST_hora_sal: new Date('2024-10-04T17:00:00Z') },
+            { _id: 2, EMP_id: 2, AST_fec_ent: new Date('2024-10-05'), AST_hora_ent: new Date('2024-10-05T09:00:00Z'), AST_fec_sal: new Date('2024-10-05'), AST_hora_sal: new Date('2024-10-05T18:00:00Z') },
+        ]);
