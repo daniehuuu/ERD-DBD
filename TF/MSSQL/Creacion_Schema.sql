@@ -1,8 +1,9 @@
-/*
 CREATE DATABASE RRHH
+GO
+
 USE RRHH
 GO 
-*/
+
 CREATE TABLE AFP
 (
   AFP_cod      int          NOT NULL,
@@ -221,7 +222,7 @@ GO
 CREATE TABLE Tipo_Beneficio
 (
   TBE_cod  int         NOT NULL,
-  TBE_desc varchar(30) NOT NULL,
+  TBE_desc varchar(40) NOT NULL,
   CONSTRAINT PK_Tipo_Beneficio PRIMARY KEY (TBE_cod)
 )
 GO
@@ -238,7 +239,7 @@ GO
 CREATE TABLE Tipo_Licencia
 (
   TLI_cod  int          NOT NULL,
-  TLI_desc nvarchar(30) NOT NULL,
+  TLI_desc nvarchar(60) NOT NULL,
   TLI_rem  bit          NOT NULL,
   CONSTRAINT PK_Tipo_Licencia PRIMARY KEY (TLI_cod)
 )

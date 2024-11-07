@@ -1,3 +1,6 @@
+USE RRHH
+GO 
+
 INSERT INTO Division (DIV_cod, DIV_Nom, DIV_Ubi_Fis)
 VALUES
 (1, 'Recursos humanos', 'Edificio A'),
@@ -10,6 +13,7 @@ VALUES
 (8, 'Legal', 'Edificio H'),
 (9, 'Atención al cliente', 'Edificio I'),
 (10, 'Compras', 'Edificio J');
+GO
 
 INSERT INTO Sub_division (SDV_cod, SDV_nom, DIV_cod)
 VALUES
@@ -23,6 +27,7 @@ VALUES
 (8, 'Investigación de mercados', 4),  
 (9, 'Ventas internacionales', 5), 
 (10, 'Ventas nacionales', 5);  
+GO
 
 INSERT INTO Cargo (CAR_Cod, CAR_Desc)
 VALUES
@@ -36,6 +41,7 @@ VALUES
 (8, 'Rep. Ventas'),
 (9, 'Inv. Mercado'),
 (10, 'Abogado Corporativo');
+GO
 
 INSERT INTO Tipo_Beneficio (TBE_cod, TBE_desc) VALUES 
 (1, 'Seguro de vida'),
@@ -48,6 +54,7 @@ INSERT INTO Tipo_Beneficio (TBE_cod, TBE_desc) VALUES
 (8, 'Bonos por impacto social'),
 (9, 'Bonos por antigüedad'),
 (10, 'Bonos por eficiencia operativa');
+GO
 
 INSERT INTO Tipo_Licencia (TLI_cod, TLI_desc, TLI_rem) VALUES 
 (1, 'Licencia por asistencia medica', 1),
@@ -60,6 +67,7 @@ INSERT INTO Tipo_Licencia (TLI_cod, TLI_desc, TLI_rem) VALUES
 (8, 'Licencia por ser bombero voluntario', 0),
 (9, 'Licencia por adopción', 1),
 (10, 'Licencia por lactancia', 0);
+GO
 
 INSERT INTO Banco (BAN_cod, BAN_desc) VALUES
 (1, 'Banco Nacional'),
@@ -72,6 +80,7 @@ INSERT INTO Banco (BAN_cod, BAN_desc) VALUES
 (8, 'Banco Financiero'),
 (9, 'Banco Regional'),
 (10, 'Banco Metropolitano');
+GO
 
 INSERT INTO AFP (AFP_cod, AFP_desc, AFP_apor_obl, AFP_seg, AFP_com)
 VALUES 
@@ -85,6 +94,7 @@ VALUES
 (8, 'AFP Futuro', 10.6, 1.3, 0.29),
 (9, 'AFP Vida', 11.3, 1.2, 0.32),
 (10, 'AFP Seguro', 10.5, 1.4, 0.3);
+GO
 
 INSERT INTO Tipo_Identificacion (TID_cod, TID_abr, TID_desc) VALUES
 (1, 'DNI', 'Documento Nacional de Identidad'),
@@ -92,6 +102,7 @@ INSERT INTO Tipo_Identificacion (TID_cod, TID_abr, TID_desc) VALUES
 (3, 'RUC', 'Registro Único de Contribuyente'),
 (4, 'PAS', 'Pasaporte'),
 (5, 'OTRO', 'Otro tipo de identificación');
+GO
 
 INSERT INTO Condicion_Trabajo (CTB_cod, CTB_desc) VALUES
 (1, 'Tiempo Completo'),
@@ -101,6 +112,7 @@ INSERT INTO Condicion_Trabajo (CTB_cod, CTB_desc) VALUES
 (5, 'Prácticas'),
 (6, 'Remoto'),
 (7, 'Presencial');
+GO
 
 INSERT INTO Parentesco (PAR_cod, PAR_desc) VALUES
 (1, 'Padre'),
@@ -113,7 +125,7 @@ INSERT INTO Parentesco (PAR_cod, PAR_desc) VALUES
 (8, 'Tía'),
 (9, 'Primo'),
 (10, 'Prima');
-
+GO
 
 INSERT INTO Empleado (EMP_cod, CTB_cod, SDV_cod, EMP_nom, EMP_ape_p, EMP_ape_m, TID_cod, EMP_num_iden, EMP_nac, EMP_sex, EMP_fec_nac, EMP_dir, EMP_tel, EMP_fec_ing, EMP_fec_ces, CAR_cod, AFP_cod, EMP_CUSPP, EMP_sld_bsc) VALUES
 (1, 1, 6, 'Juan', 'Perez', 'Lopez', 1, '12345678', 'Peru', 'M', '1985-01-01', 'Av. Siempre Viva 123', '987654321', '2010-01-01', NULL, 7, 1, 'CUSPP001', 3000.00),
@@ -136,6 +148,7 @@ INSERT INTO Empleado (EMP_cod, CTB_cod, SDV_cod, EMP_nom, EMP_ape_p, EMP_ape_m, 
 (18, 2, 8, 'Isabel', 'Gutierrez', 'Garcia', 1, '12345688', 'Peru', 'F', '2002-06-18', 'Av. Siempre Viva 140', '987654338', '2027-06-01', NULL, 1, 2, 'CUSPP018', 6400.00),
 (19, 1, 9, 'Alberto', 'Navarro', 'Rodriguez', 1, '12345699', 'Peru', 'M', '2003-07-19', 'Av. Siempre Viva 141', '987654339', '2028-07-01', NULL, 8, 1, 'CUSPP019', 6600.00),
 (20, 2, 10, 'Patricia', 'Dominguez', 'Hernandez', 1, '12345111', 'Peru', 'F', '2004-08-20', 'Av. Siempre Viva 142', '987654340', '2029-08-01', NULL, 8, 2, 'CUSPP020', 6800.00);
+GO
 
 INSERT INTO Beneficios (BEN_cod, EMP_cod,TBE_cod, BEN_fec, BEN_mon) VALUES
 (1, 1, 1, '2023-01-15', 500.00),
@@ -148,6 +161,7 @@ INSERT INTO Beneficios (BEN_cod, EMP_cod,TBE_cod, BEN_fec, BEN_mon) VALUES
 (8, 8, 8, '2023-08-14', 800.00),
 (9, 9, 9, '2023-09-23', 400.00),
 (10, 10, 10, '2023-10-30', 700.00)
+GO
 
 INSERT INTO Familiar (FAM_cod, PAR_cod, TID_cod, FAM_num_iden, FAM_nom, FAM_ape_p, FAM_ape_m, FAM_fec_nac, FAM_fec_fall, FAM_sex) VALUES
 (1, 1, 1, '81234567', 'Carlos', 'Perez', 'Ramirez', '1960-01-01', NULL, 'M'),
@@ -160,6 +174,7 @@ INSERT INTO Familiar (FAM_cod, PAR_cod, TID_cod, FAM_num_iden, FAM_nom, FAM_ape_
 (8, 8, 1, '33445566', 'Ana', 'Ramirez', 'Lopez', '1978-11-18', NULL, 'F'),
 (9, 9, 1, '44556677', 'Luis', 'Lopez', 'Ramirez', '1985-06-05', NULL, 'M'),
 (10, 10, 1, '55667788', 'Sofia', 'Lopez', 'Ramirez', '1987-09-25', NULL, 'F')
+GO
 
 INSERT INTO FAM_EMP (FAM_cod, EMP_cod) VALUES
 (1, 1),
@@ -172,6 +187,7 @@ INSERT INTO FAM_EMP (FAM_cod, EMP_cod) VALUES
 (8, 8),
 (9, 9),
 (10, 10)
+GO
 
 INSERT INTO Licencia (LIC_cod, EMP_cod, TLI_cod, LIC_fec_sol, LIC_fec_ini, LIC_fic_fin, LIC_est)
 VALUES
@@ -197,6 +213,7 @@ VALUES
 (20, 2, 2, '2026-03-01', '2026-03-10', '2026-03-20', 1),
 (21, 3, 3, '2026-04-01', '2026-04-10', '2026-04-20', 1),
 (22, 1, 1, '2026-05-01', '2026-05-10', '2026-05-20', 1)
+GO
 
 INSERT INTO Asistencia (AST_cod, EMP_cod, AST_fec_ent, AST_hora_ent, AST_fec_sal, AST_hora_sal)
 VALUES
@@ -222,6 +239,7 @@ VALUES
 (20, 2, '2024-10-23', '09:00:00', '2024-10-23', '18:00:00'),
 (21, 3, '2024-10-24', '08:30:00', '2024-10-24', '17:30:00'),
 (22, 1, '2024-10-25', '08:00:00', '2024-10-25', '17:00:00')
+GO
 
 INSERT INTO Vacaciones (VAC_cod, EMP_cod, VAC_fec_sol, VAC_fec_ini, VAC_fec_fin, VAC_est)
 VALUES
@@ -237,6 +255,7 @@ VALUES
 (10, 3, '2024-07-20', '2024-07-29', '2024-07-30', 0), 
 (11, 4, '2024-02-21', '2024-02-24', '2024-02-28', 0), 
 (12, 16, '2024-12-23', '2024-12-31', '2024-12-31', 1) 
+GO
 
 INSERT INTO Historial_Laboral (HIS_cod, EMP_cod, CAR_cod, HIS_fec_in, HIS_fec_fin, HIS_sld_bsc)
 VALUES
@@ -250,11 +269,12 @@ VALUES
 (8, 9, 2, '2020-09-01', '2022-08-01', 4600.00), 
 (9, 7, 7, '2016-09-01', '2017-09-01', 4200.00),   
 (10, 7, 8, '2017-10-01', '2019-09-01', 4400.00) 
+GO
 
 --Inserción de registros de Calculo_Salario. Se considera únicamente el sueldo básico y las deducciones por AFP.
 CREATE PROCEDURE InsertCalculoSalario
 AS
-BEGIN
+BEGIN TRAN ICS
     DECLARE @EMP_cod INT, 
             @EMP_sld_bsc DECIMAL(10, 2), 
             @AFP_apor_obl DECIMAL(4, 2), 
@@ -298,13 +318,25 @@ BEGIN
         VALUES (@EMP_cod, @comision_amount, 'Comisión', '2024-10-01', '2024-10-31', 0); 
 
         FETCH NEXT FROM employee_cursor INTO @EMP_cod, @EMP_sld_bsc, @AFP_apor_obl, @AFP_seg, @AFP_com;
-    END;
+    END
 
     CLOSE employee_cursor;
     DEALLOCATE employee_cursor;
-END
+
+    IF @@ERROR = 0
+    BEGIN
+        PRINT 'Salarios calculados correctamente.'
+        COMMIT TRAN ICS
+    END
+    ELSE
+    BEGIN
+        PRINT 'Error al calcular los salarios'
+        ROLLBACK TRAN ICS
+    END
+GO
 
 EXEC InsertCalculoSalario
+GO
 
 INSERT INTO Contrato (CTR_cod, EMP_cod, CTR_tip_con, CTR_fec_ini, CTR_fec_fin, CTR_sld_bsc, CTR_per_prueb, CTR_mot_ter)
 VALUES
@@ -328,6 +360,7 @@ VALUES
 (18, 18, 'Temporal', '2024-05-01', '2024-09-30', 2500.00, 2, NULL),
 (19, 19, 'Indefinido', '2024-06-01', '2025-06-01', 3400.00, 3, NULL),
 (20, 20, 'Temporal', '2024-07-01', '2024-12-31', 3100.00, 2, NULL)
+GO
 
 INSERT INTO Cuenta_Bancaria (CBC_cod, EMP_cod, BAN_cod, CBC_num_cta, CBC_CTS)
 VALUES
@@ -371,3 +404,4 @@ VALUES
 (38, 19, 8, '8093847569', 0),
 (39, 20, 9, '9193847560', 1),
 (40, 20, 10, '0293847562', 0)
+GO
