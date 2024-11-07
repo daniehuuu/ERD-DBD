@@ -74,3 +74,97 @@ db.Contrato.find({
   CTR_per_prueb: { $gt: 2 },
   CTR_sld_bsc: { $gt: 2500 }
 });
+
+13. Empleados con contratos temporales y sueldo básico en contrato menor a 3000
+db.Empleado.aggregate([
+  {
+    $lookup: {
+      from: "Contrato",
+      localField: "_id",
+      foreignField: "EMP_id",
+      as: "contrato"
+    }
+  },
+  {
+    $unwind: "$contrato"
+  },
+  {
+    $match: {
+      "contrato.CTR_tip_con": "Temporal",
+      "contrato.CTR_sld_bsc": { $lt: 3000 }
+    }
+  },
+  {
+    $project: {
+      EMP_nom: 1,
+      EMP_ape_p: 1,
+      EMP_ape_m: 1,
+      EMP_tel: 1,
+      "contrato.CTR_tip_con": 1,
+      "contrato.CTR_sld_bsc": 1
+    }
+  }
+]);
+
+14. Empleados que tienen contrato en periodo de prueba
+db.Empleado.aggregate([
+  {
+    $lookup: {
+      from: "Contrato",
+      localField: "_id",
+      foreignField: "EMP_id",
+      as: "contrato"
+    }
+  },
+  {
+    $unwind: "$contrato"
+  },
+  {
+    $match: {
+      "contrato.CTR_per_prueb": { $gt: 0 }
+    }
+  },
+  {
+    $project: {
+      EMP_nom: 1,
+      EMP_ape_p: 1,
+      EMP_ape_m: 1,
+      "contrato.CTR_tip_con": 1,
+      "contrato.CTR_per_prueb": 1
+    }
+  }
+]);
+
+
+15. Empleados de sexo femenino con contratos que finalizan dentro de los próximos 6 meses
+db.Empleado.aggregate([
+  {
+    $lookup: {
+      from: "Contrato",
+      localField: "_id",
+      foreignField: "EMP_id",
+      as: "contrato"
+    }
+  },
+  {
+    $unwind: "$contrato"
+  },
+  {
+    $match: {
+      EMP_sex: "F",
+      "contrato.CTR_fec_fin": {
+        $lte: new Date(new Date().setMonth(new Date().getMonth() + 6)),
+        $gte: new Date()
+      }
+    }
+  },
+  {
+    $project: {
+      EMP_nom: 1,
+      EMP_ape_p: 1,
+      EMP_ape_m: 1,
+      EMP_sex: 1,
+      "contrato.CTR_fec_fin": 1
+    }
+  }
+]);
