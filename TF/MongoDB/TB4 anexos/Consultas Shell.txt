@@ -1,0 +1,75 @@
+QUERIES en shell
+
+1. Encuentra contratos indefinidos con sueldo mayor a 4000
+db.Contrato.find({
+  CTR_tip_con: 'Indefinido',
+  CTR_sld_bsc: { $gt: 4000 }
+});
+
+2. Encuentra empleados del sexo femenino con sueldo superior a 5000 y que ingresaron antes de 2022
+db.Empleado.count({
+  EMP_sex: 'F',
+  EMP_sld_bsc: { $gt: 5000 },
+  EMP_fec_ing: { $lte: new Date("2022-01-01") }
+});
+
+3. Encuentra contratos temporales y sueldo superior a 2000
+db.Contrato.find({
+  CTR_tip_con: "Temporal",
+  CTR_sld_bsc: { $gt: 2000 }
+});
+
+4. Encuentra contratos con motivo de término no nulo y fecha de fin en el próximo mes
+db.Contrato.find({
+  CTR_mot_ter: { $exists: true, $ne: null, $ne: "" },
+  CTR_fec_fin: { $lte: new Date(new Date().setMonth(new Date().getMonth() + 1)) }
+});
+
+5. Encuentra familiar del sexo masculino y nacido después de 1990
+db.Familiar.find({
+  FAM_sex: "M",
+  FAM_fec_nac: { $gte: new Date("1990-01-01") }
+});
+
+6. Encuentra licencias que comiencen después de 2025 y cuyo estado sea 1
+db.Licencia.find({
+  LIC_fec_ini: { $gte: new Date("2026-01-01T00:00:00.000+00:00") },
+  LIC_est: 1
+});
+
+7. Encuentra registro de historial laboral con sueldo básico menor a 4000 y fecha de fin anterior a 2017
+db.Historial_Laboral.find({
+  HIS_sld_bsc: { $lt: 4000 },  // Sueldo básico menor a 4000
+  HIS_fec_fin: { $lt: new Date("2017-01-01T00:00:00.000+00:00") }
+});
+
+8. Encontrar tipo de beneficio que sea un bono
+db.Tipo_Beneficio.find({
+  TBE_desc: { $regex: /bono/i }
+
+9. Encuentra empleados con un sueldo básico entre 4000 y 5000 y tienen una AFP tipo 2
+db.Empleado.find({
+  EMP_sld_bsc: { $gte: 4000, $lte: 5000 },
+  AFP_id: 2
+});
+
+10. Encuentra empleados con fecha de nacimiento entre 1990 y 1995, con una cuenta activa y que ingresaron a la empresa antes de 2020
+db.Empleado.find({
+  EMP_fec_nac: { $gte: new Date("1990-01-01T00:00:00.000+00:00"), $lte: new Date("1995-12-31T23:59:59.000+00:00") },
+  "EMP_cta.1": { $exists: true },
+  EMP_fec_ing: { $lt: new Date("2020-01-01T00:00:00.000+00:00") }
+});
+
+11. Encuentra empleados cuyo apellido paterno empieza con "R", su fecha de ingreso sea después de 2018, y que tienen un sueldo mayor a 4500
+db.Empleado.find({
+  EMP_ape_p: { $regex: /^R/ },
+  EMP_fec_ing: { $gte: new Date("2018-01-01T00:00:00.000+00:00") },
+  EMP_sld_bsc: { $gt: 4500 }
+});
+
+12. Encuentra contratos indefinidos con periodo de prueba mayor a 2 y sueldo mayor a 2500
+db.Contrato.find({
+  CTR_tip_con: "Indefinido",
+  CTR_per_prueb: { $gt: 2 },
+  CTR_sld_bsc: { $gt: 2500 }
+});
