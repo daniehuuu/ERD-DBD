@@ -7,7 +7,7 @@ db.Contrato.find({
 });
 
 2. Encuentra empleados del sexo femenino con sueldo superior a 5000 y que ingresaron antes de 2022
-db.Empleado.count({
+db.Empleado.countDocuments({
   EMP_sex: 'F',
   EMP_sld_bsc: { $gt: 5000 },
   EMP_fec_ing: { $lte: new Date("2022-01-01") }
