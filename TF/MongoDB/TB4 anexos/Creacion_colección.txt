@@ -20,54 +20,63 @@ db.createCollection("Licencia", {
     },
   },
 });
-
-db.createCollection("Empleado", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      title: "Empleado",
-      required: ["_id", "CTB_id", "SDV_id", "EMP_cta", "EMP_nom", "EMP_ape_p", "EMP_ape_m", "EMP_ident", "EMP_nac", "EMP_sex", "EMP_fec_nac", "EMP_dir", "EMP_tel", "EMP_fec_ing", "EMP_fec_ces", "CAR_id", "AFP_id", "EMP_sld_bsc"],
-      properties: {
-        "_id": { bsonType: "objectId" },
-        "CTB_id": { bsonType: "string" },
-        "SDV_id": { bsonType: "string" },
-        "EMP_cta": {
-          bsonType: "array",
-          items: {
-            bsonType: "object",
-            required: ["EMP_banc", "EMP_num", "EMP_es_CTS"],
-            properties: {
-              "EMP_banc": { bsonType: "string" },
-              "EMP_num": { bsonType: "string" },
-              "EMP_es_CTS": { bsonType: "bool" },
-            },
-          },
-        },
-        "EMP_nom": { bsonType: "string" },
-        "EMP_ape_p": { bsonType: "string" },
-        "EMP_ape_m": { bsonType: "string" },
-        "EMP_ident": {
-          bsonType: "object",
-          title: "EMP_ident",
-          required: ["EMP_tipo", "EMP_num"],
-          properties: {
-            "EMP_tipo": { bsonType: "string" },
-            "EMP_num": { bsonType: "string" },
-          },
-        },
-        "EMP_nac": { bsonType: "date" },
-        "EMP_sex": { bsonType: "string" },
-        "EMP_fec_nac": { bsonType: "date" },
-        "EMP_dir": { bsonType: "string" },
-        "EMP_tel": { bsonType: "string" },
-        "EMP_fec_ing": { bsonType: "date" },
-        "EMP_fec_ces": { bsonType: "date" },
-        "CAR_id": { bsonType: "string" },
-        "AFP_id": { bsonType: "string" },
-        "EMP_sld_bsc": { bsonType: "decimal" },
-      },
+db.createCollection("Empleado", {  
+    validator: {       
+       $jsonSchema: {            
+        bsonType: "object",            
+        title: "Empleado",            
+        required: ["_id", "CTB_id", "SDV_id", "EMP_cta", "EMP_nom", "EMP_ape_p", "EMP_ape_m", "EMP_ident", "EMP_nac", "EMP_sex", "EMP_fec_nac", "EMP_dir", "EMP_tel", "EMP_fec_ing", "CAR_id", "AFP_id", "EMP_sld_bsc"],            
+        properties: {                
+          "_id": { bsonType: "objectId" },                
+          "CTB_id": { bsonType: "objectId" },                
+          "SDV_id": { bsonType: "objectId" },                
+          "EMP_cta": {                    
+            bsonType: "array",                    
+            items: {                        
+              bsonType: "object",                        
+              required: ["EMP_banc", "EMP_num", "EMP_es_CTS"],                        
+              properties: {                            
+                "EMP_banc": { bsonType: "string" },                            
+                "EMP_num": { bsonType: "string" },                            
+                "EMP_es_CTS": { bsonType: "bool" },                        
+              },                    
+            },                
+          },                
+          "EMP_nom": { bsonType: "string" },                
+          "EMP_ape_p": { bsonType: "string" },                
+          "EMP_ape_m": { bsonType: "string" },                
+          "EMP_ident": {                    
+            bsonType: "object",                    
+            title: "EMP_ident",                    
+            required: ["EMP_tipo", "EMP_num"],                    
+            properties: {                        
+              "EMP_tipo": { bsonType: "string" },                        
+              "EMP_num": { bsonType: "string" },                    
+              },                
+            },                
+            "EMP_fam": {                    
+              bsonType: "array",                    
+              items: {                        
+                bsonType: "object",                        
+                required: ["FAM_id"],                        
+                properties: {                            
+                  "FAM_id": { bsonType: "objectId" },                        
+                  }                    
+                }                
+              },                
+              "EMP_nac": { bsonType: "date" },               
+              "EMP_sex": { bsonType: "string" },                
+              "EMP_fec_nac": { bsonType: "date" },                
+              "EMP_dir": { bsonType: "string" },                
+              "EMP_tel": { bsonType: "string" },                
+              "EMP_fec_ing": { bsonType: "date" },                
+              "EMP_fec_ces": { bsonType: "date" },                
+              "CAR_id": { bsonType: "objectId" },                
+              "AFP_id": { bsonType: "objectId" },                
+              "EMP_sld_bsc": { bsonType: "decimal" },            
+        },        
+      },    
     },
-  },
 });
 
 db.createCollection("Condicion_Trabajo", {
@@ -275,21 +284,6 @@ db.createCollection("Parentesco", {
       properties: {
         "_id": { bsonType: "objectId" },
         "PAR_desc": { bsonType: "string" },
-      },
-    },
-  },
-});
-
-db.createCollection("FAM_EMP", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      title: "FAM_EMP",
-      required: ["_id", "FAM_id", "EMP_id"],
-      properties: {
-        "_id": { bsonType: "string" },
-        "FAM_id": { bsonType: "objectId" },
-        "EMP_id": { bsonType: "objectId" },
       },
     },
   },
