@@ -45,7 +45,8 @@ db.Historial_Laboral.find({
 
 8. Encontrar tipo de beneficio que sea un bono
 db.Tipo_Beneficio.find({
-  TBE_desc: { $regex: /bono/i }
+  TBE_desc: { $regex: "bono", $options: "i" }
+});
 
 9. Encuentra empleados con un sueldo básico entre 4000 y 5000 y tienen una AFP tipo 2
 db.Empleado.find({
